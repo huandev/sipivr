@@ -10,3 +10,7 @@ video https://www.youtube.com/watch?v=BGIrc9PPLF8
 - creating and testing IVR trees directly in browser using WebRTC
 - provides scripting (javascript, typescript)
 - provides drag&drop of wav/mp3 files
+
+
+# Build
+mvn install
