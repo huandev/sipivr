@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+       <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
+
+       <bean class="ru.sipivr.web.auth.DefaultRolesPrefixPostProcessor"/>
+
+       <bean name="customAuthenticationSuccessHandler" class="ru.sipivr.web.auth.CustomAuthenticationSuccessHandler"/>
+       <bean id="webRequestCache" class="ru.sipivr.web.auth.WebRequestCache"/>
+
+       <bean id="authenticationEntryPoint" class="ru.sipivr.web.auth.CustomLoginUrlAuthenticationEntryPoint">
+              <constructor-arg name="loginFormUrl" value="/auth"/>
+       </bean>
+
+       <security:http entry-point-ref="authenticationEntryPoint">
+              <security:intercept-url pattern="/service/*" access="hasIpAddress('127.0.0.1')" />
+              <security:intercept-url pattern="/jsp/*" access="denyAll()" />
+              <security:form-login login-page="/auth"
+                                   login-processing-url="/auth/login"
+                                   authentication-failure-url="/auth?error"
+                                   authentication-success-handler-ref="customAuthenticationSuccessHandler"/>
+              <security:request-cache ref="webRequestCache"/>
+              <security:logout logout-url="/auth/logout" logout-success-url="/auth" invalidate-session="true" delete-cookies="JSESSIONID"/>
+              <security:csrf disabled="true"/>
+              <security:access-denied-handler/>
+       </security:http>
+
+       <bean name="customAuthenticationProvider" class="ru.sipivr.web.auth.CustomAuthenticationProvider"/>
+       <bean name="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+       <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+              <property name="cookieName" value="LOCALE"/>
+              <property name="defaultLocale" value="en"/>
+       </bean>
+
+       <security:authentication-manager>
+              <security:authentication-provider ref="customAuthenticationProvider"/>
+       </security:authentication-manager>
+</beans>

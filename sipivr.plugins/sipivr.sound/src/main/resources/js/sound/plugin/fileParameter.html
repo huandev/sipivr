@@ -1,0 +1,15 @@
+<span data-bind="text: title"></span>
+
+<select disabled="disabled"
+        data-bind="value: value,
+                    options: options,
+                    optionsValue: $data.optionsValue ? optionsValue : undefined,
+                    optionsText: $data.optionsText ? optionsText : undefined,
+                    optionsCaption: $data.optionsCaption ? optionsCaption : undefined,
+                    optionsAfterRender: function(option, item) { $data.optionsAfterRender ? optionsAfterRender(option, item) : null },
+                    css: {'invalid-parameter': !isValid()},
+                    style: style,
+                    attr: { placeholder: (isValid() ? '' : 'input valid value here')}">
+</select>
+
+<button class="blue" data-bind="message: 'ui.choose', click: select"></button>

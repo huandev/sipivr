@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+       <context:property-placeholder location="classpath:app.properties"/>
+
+       <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"/>
+       <bean id="taskScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler"/>
+
+       <bean id="mapper" class="org.dozer.DozerBeanMapper"/>
+
+       <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+              <property name="protocol" value="smtp"/>
+              <property name="host" value="${mail.host}"/>
+              <property name="port" value="${mail.port}"/>
+              <property name="username" value="${mail.user}"/>
+              <property name="password" value="${mail.password}"/>
+              <property name="javaMailProperties">
+                     <props>
+                            <prop key="mail.smtp.auth">true</prop>
+                            <prop key="mail.smtp.ssl.enable">true</prop>
+                     </props>
+              </property>
+       </bean>
+
+       <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
+
+       <context:component-scan base-package="ru.sipivr.*.plugin"/>
+       <context:component-scan base-package="ru.sipivr.*.schedule"/>
+       <context:component-scan base-package="ru.sipivr.*.service"/>
+
+       <bean id="messageSource" class="ru.sipivr.web.utils.ReloadableResourceBundleMessageSource">
+              <property name="basenames" value="classpath*:i18n"/>
+              <property name="fallbackToSystemLocale" value="false"/>
+              <property name="defaultEncoding" value="UTF-8"/>
+              <property name="fileEncodings" value="UTF-8"/>
+       </bean>
+
+       <import resource="classpath:db-context.xml"/>
+</beans>

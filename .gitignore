@@ -1,0 +1,8 @@
+syntax: glob
+.idea/*
+**/target/*
+*.iml
+sipivr.web/src/main/resources/logback.xml
+sipivr.web/src/main/resources/app.properties
+**/node_modules/*
+*.ts.js

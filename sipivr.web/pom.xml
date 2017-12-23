@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sipivr.web</artifactId>
+    <version>0.0.1</version>
+    <packaging>war</packaging>
+
+    <parent>
+        <groupId>ru.sipivr</groupId>
+        <artifactId>sipivr</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.core</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.logback-extensions</groupId>
+            <artifactId>logback-ext-spring</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+
+        <!--TODO: quick debug-->
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.cbr</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.report</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.schedule</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.script</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.sound</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.speech</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.system</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.sipivr</groupId>
+            <artifactId>sipivr.voicemail</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
+
+    <!--<pluginRepositories>-->
+        <!--<pluginRepository>-->
+            <!--<name>oss.sonatype.org</name>-->
+            <!--<id>oss.sonatype.org</id>-->
+            <!--<url>http://oss.sonatype.org/content/groups/public</url>-->
+        <!--</pluginRepository>-->
+    <!--</pluginRepositories>-->
+
+    <build>
+        <finalName>sipivr.web</finalName>
+        <plugins>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-war-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<warSourceExcludes>js/**/*.js, css/**/*.css</warSourceExcludes>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+                <!--<groupId>net.alchim31.maven</groupId>-->
+                <!--<artifactId>yuicompressor-maven-plugin</artifactId>-->
+                <!--<version>1.3.2</version>-->
+                <!--<configuration>-->
+                    <!--<preProcessAggregates>false</preProcessAggregates>-->
+                    <!--<excludes>-->
+                        <!--<exclude>target/**</exclude>-->
+                        <!--<exclude>js/libs/**</exclude>-->
+                        <!--<exclude>**/libs/**</exclude>-->
+                        <!--<exclude>**/*-min.js</exclude>-->
+                        <!--<exclude>**/*.min.css</exclude>-->
+                    <!--</excludes>-->
+                    <!--<jswarn>false</jswarn>-->
+                    <!--<force>true</force>-->
+                    <!--<nosuffix>true</nosuffix>-->
+                    <!--<sourceDirectory>${basedir}/target</sourceDirectory>-->
+                    <!--<outputDirectory>${basedir}/target</outputDirectory>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>compress_js_css</id>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>compress</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        </plugins>
+    </build>
+</project>

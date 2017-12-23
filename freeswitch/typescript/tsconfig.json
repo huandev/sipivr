@@ -1,0 +1,5 @@
+{
+    "compileOnSave": false,
+    "target": "ES6",
+    "module": "ES6"
+}

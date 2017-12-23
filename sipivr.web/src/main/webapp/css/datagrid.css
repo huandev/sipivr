@@ -1,0 +1,32 @@
+/* datagrid */
+
+.table {}
+.table th, .table td {padding: 5px; vertical-align: middle;}
+.table thead {background: #fcfcfc; }
+.table-border tr { border-bottom: 1px solid #ccc; }
+.table-border tbody tr:last-child, .table-border tfoot tr:last-child {border-bottom: none; }
+.table-border tfoot tr:first-child { border-top: 1px solid #ccc;  }
+.table-td-top td { vertical-align: top; }
+
+.table input[type=text], .table  input[type=password], .table select {width:90%;}
+
+.table-overflow {  }
+.table-overflow thead { display: block; float: left; width:inherit;  }
+.table-overflow tfoot { display: block; float: left; width:inherit;  }
+.table-overflow tbody { display: block; float: left; width:inherit; overflow: hidden;  overflow-y: auto; }
+.table-overflow tbody td, .table-overflow tbody th { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* paged datagrid */
+.datagrid-sortable { display: table; width: 100%; cursor: pointer; }
+.datagrid-sortable > div { display: table-cell; vertical-align: middle; }
+.datagrid-sortable .datagrid-sorting-arrows { width: 1em; color: #CCC; }
+.datagrid-sortable .datagrid-sorting-arrows > div { -ms-word-break: break-all; word-break: break-all; font-size:0.8em; color: #000; }
+.datagrid-sortable .datagrid-sorting-arrows.desc-sorted > div:before { content: "\25BC"; }
+.datagrid-sortable .datagrid-sorting-arrows.asc-sorted > div:after { content: "\25B2"; }
+
+.datagrid-footer-bar { display: table; width: 100%; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+.datagrid-footer-bar > div { display: table-row; }
+.datagrid-footer-bar > div > div { display: table-cell; }
+
+.datagrid-page-links { padding: 5px 10px 5px 15px; text-align: center; }
+.datagrid-page-links > button { display: inline-block; margin: 2px 0; min-width: 20px; }

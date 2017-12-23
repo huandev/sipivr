@@ -1,0 +1,31 @@
+<span data-bind="text: title"></span>
+
+<!-- ko if: !$data.date && !$data.options && !$data.enums -->
+<input type="text" data-bind="value: value, style: style, css: {'invalid-parameter': !isValid()}, attr: { placeholder: (isValid() ? '' : 'input valid value here')}, event: { keydown: function(item, e) { if(e.keyCode == 13) { value(e.target.value); } e.stopPropagation(); return true; } }" />
+<!-- /ko -->
+
+<!-- ko if: $data.date -->
+<input type="text" data-bind="value: value, date: $data.date, style: style, css: {'invalid-parameter': !isValid()}, attr: { placeholder: (isValid() ? '' : 'input valid value here')}, event: { keydown: function(item, e) { if(e.keyCode == 13) { value(e.target.value); } e.stopPropagation(); return true; } }" />
+<!-- /ko -->
+
+<!-- ko if: $data.options -->
+<select data-bind="value: value,
+                                options: options,
+                                optionsValue: $data.optionsValue ? optionsValue : undefined,
+                                optionsText: $data.optionsText ? optionsText : undefined,
+                                optionsCaption: $data.optionsCaption ? optionsCaption : undefined,
+                                optionsAfterRender: function(option, item) { $data.optionsAfterRender ? optionsAfterRender(option, item) : null },
+                                css: {'invalid-parameter': !isValid()},
+                                style: style,
+                                attr: { placeholder: (isValid() ? '' : 'input valid value here')}">
+</select>
+<!-- /ko -->
+
+<!-- ko if: $data.enums -->
+    <!-- ko foreach: Object.keys($data.enums) -->
+        <label>
+            <span data-bind="text: $parent.enums[$data]"></span>
+            <input type="checkbox" data-bind="value: $parent.value, enum: $data, enums: $parent.enums"/>
+        </label>
+    <!-- /ko -->
+<!-- /ko -->

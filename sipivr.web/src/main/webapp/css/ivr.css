@@ -1,0 +1,62 @@
+#svg, #parameters, #toolbar { position: absolute; }
+
+#toolbar { padding:0; width:180px; top:0; bottom: 0; overflow: hidden; overflow-y: auto; }
+#toolbar .button { margin:3px; padding:3px 5px; display:block; line-height: 22px; height: 22px; }
+#toolbar .button.disabled { cursor: not-allowed;  color:#ccc; opacity: 0.8; }
+#toolbar .toolbar-section:first-child .button {line-height: 30px; height: 30px;}
+
+.toolbar-section { border:1px solid #ccc; border-radius:3px; margin:2px; background:#fff;}
+.toolbar-section:hover { border:1px solid #fff;}
+
+.toolbar-header {width:100%; display:table; cursor:pointer; color: #333; }
+.toolbar-header:hover { color: #000; }
+.toolbar-header > div { display: table-cell; padding:3px; }
+.toolbar-header .arrow { width: 1em; }
+.toolbar-header .arrow > div { -ms-word-break: break-all; word-break: break-all;  }
+.toolbar-header .arrow.arrow-up > div:before { content: "\25B2"; }
+.toolbar-header .arrow.arrow-down > div:after { content: "\25BC"; }
+
+.svg {background: #ccc;}
+.svg text {cursor: move; }
+.svg .icon {font-family: "fontello"; stroke-width: 0; }
+.svg .menu .menu-back { fill: #fff; stroke: #007aaa; stroke-width: 1; }
+.svg .menu.active .menu-back { stroke-dasharray: 5,2; stroke: #487209; stroke-width: 2px; }
+.svg .menu.active .header .header-back { fill: #487209; }
+.svg .menu.active circle.point.output {fill:#487209; }
+
+.svg .menu .header .header-back { fill: #007aaa; cursor: move; }
+.svg .menu .header .header-text { fill: #fff; }
+.svg .menu .header .icon { fill: #f0f0f0; cursor:pointer;  font-size: 1.4em; }
+.svg .menu .header .icon:hover {fill: #fff;}
+
+.svg .menu .menu-items .menu-items-back { fill: #fff; }
+/*.svg .menu .menu-items.target {opacity:0.75; }*/
+.svg .menu.highlight .menu-items .menu-items-back { fill: #6c6; }
+.svg .menu.highlight .menu-items .menu-item { opacity: 0.5; }
+
+.svg .menu-item .icon-left { fill: #CC0000; cursor:pointer; font-size: 1.4em; }
+.svg .menu-item .icon-left:hover {fill: #EE0000;}
+.svg .menu-item .icon-right { fill: #007aaa; font-size: 1.2em; }
+
+.svg .menu-item .menu-item-back { fill: #fff; stroke: #007aaa; stroke-width: 1; cursor: move; }
+.svg .menu-item.active .menu-item-back { stroke-dasharray: 5,2; stroke: #487209; stroke-width: 2px; }
+.svg .menu-item.active circle.point.output {fill:#487209; }
+.svg .menu-item:hover .menu-item-back { fill: #f0f0f0; }
+.svg .menu-item .menu-item-incorrect { fill: #FFCBDB; }
+
+circle.point {fill: #fff; opacity:0.9; cursor: pointer; }
+circle.point:hover {opacity:1;}
+circle.point.input {fill:#CC0000;}
+circle.point.output {fill:#007aaa; }
+
+.svg .point.input:hover { fill: #EE0000; }
+
+.svg image { opacity: 0.8; cursor: pointer; }
+.svg image:hover { opacity: 1; }
+
+.svg .line { stroke: #007aaa; stroke-width: 2; }
+
+#parameters { left:180px; top:5px; right:5px; padding:6px; color:#fff; }
+#parameters .button {margin:3px 0 3px 3px; width:32px; height:32px; }
+#parameters input[type=text] {width:100px;}
+

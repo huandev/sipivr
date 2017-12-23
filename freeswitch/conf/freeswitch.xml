@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<document type="freeswitch/xml">
+	<!--
+      The following variables are set dynamically - calculated if possible by freeswitch - and
+      are available to the config as .  You can see their calculated value via fs_cli
+      by entering eval
+
+      hostname
+      local_ip_v4
+      local_mask_v4
+      local_ip_v6
+      switch_serial
+      base_dir
+      recordings_dir
+      sound_prefix
+      sounds_dir
+      core_uuid
+      zrtp_enabled
+      nat_public_addr
+      nat_private_addr
+      nat_type
+    -->
+
+	<X-PRE-PROCESS cmd="set" data="ringback=%(800,3200,425)"/>
+	<X-PRE-PROCESS cmd="set" data="domain=$${local_ip_v4}"/>
+
+	<!-- SIP and TLS settings -->
+	<!-- <X-PRE-PROCESS cmd="set" data="sip_tls_version=sslv23"/>-->
+
+	<!-- External SIP Profile -->
+	<!--<X-PRE-PROCESS cmd="set" data="external_auth_calls=false"/>
+	<X-PRE-PROCESS cmd="set" data="external_sip_port=5080"/>
+	<X-PRE-PROCESS cmd="set" data="external_tls_port=5081"/>
+	<X-PRE-PROCESS cmd="set" data="external_ssl_enable=true"/>
+	<X-PRE-PROCESS cmd="set" data="external_ssl_dir=$${base_dir}/conf/ssl"/>-->
+
+	<section name="configuration" description="Configuration">
+		<configuration name="switch.conf">
+			<settings>
+				<param name="colorize-console" value="true"/>
+				<param name="dialplan-timestamps" value="true"/>
+				<param name="max-sessions" value="1000"/>
+				<param name="sessions-per-second" value="30"/>
+				<!-- Default Global Log Level - value is one of debug,info,notice,warning,err,crit,alert -->
+				<param name="loglevel" value="debug"/>
+				<param name="verbose-channel-events" value="yes"/>
+			</settings>
+		</configuration>
+
+		<configuration name="modules.conf" description="Modules">
+			<modules>
+				<load module="mod_console"/>
+				<load module="mod_logfile"/>
+
+				<load module="mod_sofia"/>
+				<load module="mod_dialplan_xml"/>
+				<load module="mod_dptools"/>
+				<load module="mod_commands"/>
+				<load module="mod_expr"/>
+				<load module="mod_sndfile"/>
+				<load module="mod_curl"/>
+				<load module="mod_v8"/>
+				<load module="mod_rtc"/>
+			</modules>
+		</configuration>
+
+		<configuration name="console.conf" description="Console Logger">
+			<mappings>
+				<map name="all" value="console,debug,info,notice,warning,err,crit,alert"/>
+			</mappings>
+			<settings>
+				<param name="loglevel" value="debug"/>
+				<param name="colorize" value="true"/>
+			</settings>
+		</configuration>
+		<configuration name="logfile.conf" description="File Logging">
+			<settings>
+				<!-- true to auto rotate on HUP, false to open/close -->
+				<param name="rotate-on-hup" value="true"/>
+			</settings>
+			<profiles>
+				<profile name="default">
+					<settings>
+						<!-- File to log to -->
+						<!--<param name="logfile" value="/var/log/freeswitch/freeswitch.log"/>-->
+						<!-- At this length in bytes rotate the log file (0 for never) -->
+						<param name="rollover" value="10485760"/>
+						<!-- Maximum number of log files to keep before wrapping -->
+						<!-- If this parameter is enabled, the log filenames will not include a date stamp -->
+						<!-- <param name="maximum-rotate" value="32"/> -->
+						<!-- Prefix all log lines by the session's uuid  -->
+						<param name="uuid" value="true" />
+					</settings>
+					<mappings>
+						<!--
+							 name can be a file name, function name or 'all'
+							 value is one or more of debug,info,notice,warning,err,crit,alert,all
+							 Please see comments in console.conf.xml for more information
+						-->
+						<map name="all" value="console,debug,info,notice,warning,err,crit,alert"/>
+					</mappings>
+				</profile>
+			</profiles>
+		</configuration>
+		<configuration name="sofia.conf" description="sofia Endpoint">
+			<global_settings>
+				<param name="log-level" value="0"/>
+				<!-- <param name="auto-restart" value="false"/> -->
+				<param name="debug-presence" value="0"/>
+				<!-- <param name="capture-server" value="udp:homer.domain.com:5060"/> -->
+			</global_settings>
+			<profiles>
+				<!--sofia status profile external-->
+				<profile name="external">
+					<domains>
+						<domain name="all" alias="true" parse="false"/>
+					</domains>
+					<settings>
+						<param name="context" value="public"/>
+						<param name="sip-port" value="5060"/>
+						<param name="dialplan" value="XML"/>
+						<param name="rtp-ip" value="$${domain}"/>
+						<param name="sip-ip" value="$${domain}"/>
+						<param name="auth-calls" value="false"/>
+						<param name="rtp-timer-name" value="soft"/>
+						<param name="rfc2833-pt" value="101"/>
+						<!--<param name="inbound-codec-prefs" value="$${global_codec_prefs}"/>
+						<param name="outbound-codec-prefs" value="$${global_codec_prefs}"/>-->
+
+						<param name="apply-candidate-acl" value="localnet.auto"/>
+						<!--<param name="enable-3pcc" value="true"/>
+						<param name="local-network-acl" value="localnet.auto"/>
+						<param name="aggressive-nat-detection" value="true"/>
+						<param name="user-agent-string" value="Test Server"/>
+						<param name="NDLB-force-rport" value="safe"/>
+						<param name="multiple-registrations" value="false"/>
+						<param name="nat-options-ping" value="true"/>
+						<param name="bypass_media" value="false"/>
+						<param name="NDLB-received-in-nat-reg-contact" value="true"/> -->
+
+						<!--<param name="ws-binding"  value=":5066"/>--> <!-- для   ws -->
+						<param name="wss-binding" value=":5066"/><!-- для   wss -->
+						<param name="tls-cert-dir" value="C:/Program Files/FreeSWITCH/certs"/>
+						<!--<param name="tls-passphrase" value=""/> -->
+
+						<!--<param name="sip_port" value="5080"/>
+						<param name="tls_port" value="5081"/>
+						<param name="ssl_enable" value="true"/>
+						<param name="ssl_dir" value="$${base_dir}/conf/ssl"/>-->
+
+						<param name="use-rtp-timer" value="true"/>
+						<param name="enable-timer" value="false"/>
+						<!-- <param name="liberal-dtmf" value="true"/> --> <!-- sipml5 отправляет DTMF методом INFO -->
+						<!--<param name="inbound-late-negotiation" value="false"/>
+						<param name="disable-transcoding" value="false"/>
+						
+						<param name="candidate-acl" value="localnet.auto"/>-->
+					</settings>
+				</profile>
+			</profiles>
+		</configuration>
+
+		<configuration name="v8.conf" description="Google V8 JavaScript Plug-Ins">
+			<modules>
+				<!-- <load module="mod_v8_skel"/> -->
+			</modules>
+		</configuration>
+	</section>
+
+	<section name="dialplan" description="Regex/XML Dialplan">
+		<context name="public">
+			<extension name="record">
+				<condition field="destination_number" expression="^record$" break="on-false">
+					<action application="set" data="record_sample_rate=8000"/>
+					<action application="answer" data=""/>
+					<action application="record" data="record/${sip_call_id}.wav 10 200 3"/>
+				</condition>
+			</extension>
+			<extension name="sipivr">
+				<condition field="destination_number" expression="^(\d+)$">
+					<action application="set" data="bypass_media=true"/>
+					<action application="javascript" data="sipivr.js $1"/>
+					<action application="hangup" data=""/>
+				</condition>
+			</extension>
+		</context>
+	</section>
+</document>
