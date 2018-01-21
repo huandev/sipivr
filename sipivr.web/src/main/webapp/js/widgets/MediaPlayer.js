@@ -47,7 +47,8 @@ define(['knockout'], function (ko) {
         });
 
         this.audioContainer.addEventListener('ended', function(){
-            console.log("ended");
+            // console.log("ended");
+            self.state(mediaPlayerState.Stop);
             self.src(null);
         });
 

@@ -20,7 +20,7 @@
     #mediaPlayer .progress {width:320px; margin-left: 5px;}
 </style>
 
-<div id="mediaPlayer" class="player gray" style="display: none;" data-bind="visible: time() > 0">
+<div id="mediaPlayer" class="player gray" style="display: none;" data-bind="visible: state() != 'Stop'">
     <audio data-bind="event: { load: function() { init($element); }() }, attr: { src: src }"></audio>
 
     <div data-bind="text: title">
@@ -30,7 +30,7 @@
         <i class="green icon-play" data-bind="click: play, visible: state() != 'Play'"></i>
         <i class="red icon-pause" data-bind="click: pause, visible: state() == 'Play'"></i>
 
-        <i class="red icon-stop" data-bind="click: function() { src(null); }"></i>
+        <i class="red icon-stop" data-bind="click: function() { stop(); src(null); }"></i>
         <div class="progress" data-bind="click: function(data, event) { click(event); }" style="text-align: center;">
             <div class="progress-bar green" data-bind="style: { width: Math.round(percent()) + '%' }"></div>
         </div>
