@@ -121,7 +121,7 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag"],
         }
 
         SoundEditor.prototype.click = function (data, e) {
-            var x = e.clientX - e.currentTarget.getBoundingClientRect().left - 10;
+            var x = e.clientX - e.currentTarget.getBoundingClientRect().left;
             if(x > 1000){
                 x = 1000;
             }
