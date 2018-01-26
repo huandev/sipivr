@@ -38,11 +38,17 @@ public class SoundController extends BaseController {
     }
 
     private File getFileBySound(int id, MediaConverterFormat extension) {
-        return new File(appConfig.getSoundPath(String.format("%s.%s", id, extension.getValue())));
+        return new File(appConfig.getSoundPath("db", String.format("%s.%s", id, extension.getValue())));
     }
 
     @RequestMapping("/index")
-    public String sounds(){
+    public String sounds() throws Exception {
+        if (!new File(appConfig.getSoundPath("db")).exists() && !new File(appConfig.getSoundPath("db")).mkdirs()){
+            throw new UserException();
+        }
+        if (!new File(appConfig.getSoundPath("record")).exists() && !new File(appConfig.getSoundPath("record")).mkdirs()){
+            throw new UserException();
+        }
         return "/sounds";
     }
 
@@ -55,10 +61,6 @@ public class SoundController extends BaseController {
 
             if (MediaConverterFormat.valueOf(extension.toUpperCase()) == null)
                 throw new UserException("format not supported");
-        }
-
-        if (!new File(appConfig.getSoundPath()).exists() && !new File(appConfig.getSoundPath()).mkdirs()){
-            throw new UserException();
         }
 
         List<Sound> model = new ArrayList<>();
@@ -93,13 +95,9 @@ public class SoundController extends BaseController {
     @ResponseBody
     public Sound updateFile(@RequestParam("file") MultipartFile file, @PathVariable("id") int id) throws Exception {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        if (MediaConverterFormat.valueOf(extension.toUpperCase()) == null)
+        if (MediaConverterFormat.valueOf(extension.toUpperCase()) == null) {
             throw new UserException("format not supported");
-
-        if (!new File(appConfig.getSoundPath()).exists() && !new File(appConfig.getSoundPath()).mkdirs()){
-            throw new UserException();
         }
-
         Sound sound = dao.get(SoundDao.class).get(id);
 
         MediaConverterFormat mediaConverterFormat = MediaConverterFormat.valueOf(extension.toUpperCase());

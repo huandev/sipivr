@@ -130,3 +130,6 @@ table .info {float: right;}
     border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid #333;
 }
 
+.text-red { color: #64a70b; }
+.text-green { color: #64a70b; }
+.text-blue { color: #64a70b; }

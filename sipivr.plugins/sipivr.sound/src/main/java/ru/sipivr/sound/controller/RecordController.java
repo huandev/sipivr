@@ -27,12 +27,12 @@ import java.nio.file.StandardCopyOption;
 @RequestMapping("/record")
 public class RecordController extends BaseController {
     private File getFileBySound(Sound s, MediaConverterFormat extension) {
-        return new File(appConfig.getSoundPath(), String.format("%s.%s", s.getId(), extension.getValue()));
+        return new File(appConfig.getSoundPath("db"), String.format("%s.%s", s.getId(), extension.getValue()));
     }
 
     @RequestMapping(value = "/quick", produces = "application/json")
     @ResponseBody
-    public Sound quick(){
+    public Sound quick() {
         Sound sound = new Sound();
         sound.setOwnerId(getCurrentUser().getId());
         sound.setOwner(getCurrentUser());
@@ -46,7 +46,7 @@ public class RecordController extends BaseController {
     public void quickRefresh(@RequestParam int soundId, @RequestParam String uuid) throws Exception {
         Sound sound = dao.get(SoundDao.class).get(soundId);
         User u = getCurrentUser();
-        if(u.hasAnyRole(UserRole.ADMIN) || sound.getOwnerId() == u.getId()){
+        if (u.hasAnyRole(UserRole.ADMIN) || sound.getOwnerId() == u.getId()) {
             File targetFile = getFileBySound(sound, MediaConverterFormat.WAV);
             File sourceFile = new File(appConfig.getSoundPath(), "record/" + uuid + ".wav");
 

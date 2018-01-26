@@ -1,11 +1,12 @@
-define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag"],
-    function(ko, messages, mediaPlayer, Drag){
-        function SoundEditor() {
+define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widgets/sipclient"],
+    function(ko, messages, mediaPlayer, Drag, sipclient){
+        function Editor() {
             var self = this;
 
+            this.sipclient = sipclient;
             this.mediaPlayer = mediaPlayer;
 
-            this.filePath = ko.observable();
+            this.path = ko.observable();
             this.wavInfo = ko.observable();
 
             this.soundPathD = ko.computed(function() {
@@ -40,7 +41,7 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag"],
                     return [];
                 }
 
-                var steps = [50, 100, 250, 500, 1000];
+                var steps = [50, 100, 250, 500, 1000, 5000, 10000];
                 var step = 0;
                 for (var i = 0; i < steps.length; i++) {
                     step = steps[i];
@@ -64,30 +65,26 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag"],
                 }
             });
         }
-        
-        SoundEditor.prototype.load = function (filePath) {
-            var self = this;
 
-            this.wavInfo(null);
-            $.post(contextPath + "soundEditor/getWavInfo", { filePath: filePath }, function(wavInfo){
-                self.mediaPlayer.title(filePath);
-                self.mediaPlayer.src(contextPath + "soundEditor/play?filePath=" + encodeURIComponent(filePath));
+        Editor.prototype.load = function (path) {
+            var self = this;
+            $.post(contextPath + "wav/get", { path: path }, function(wavInfo){
+                self.mediaPlayer.title(path);
+                self.mediaPlayer.src(contextPath + "wav/play?path=" + encodeURIComponent(path) + "&timestamp=" + new Date().valueOf());
 
                 self.left(0);
                 self.right(0);
-
-                self.filePath(filePath);
+                self.path(path);
                 self.wavInfo(wavInfo);
-
                 self.right(self.duration());
             });
         }
-        
-        SoundEditor.prototype.initLeft = function (ui) {
+
+        Editor.prototype.initLeft = function (ui) {
             var self = this;
-            var duration = self.duration();
-            var drag = new Drag(ui, {
+            new Drag(ui, {
                 move: function (data) {
+                    var duration = self.duration();
                     self.left(self.left() + duration * data.dx / 1000);
 
                     if(self.left() < 0){
@@ -99,11 +96,11 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag"],
             });
         }
 
-        SoundEditor.prototype.initRight = function (ui) {
+        Editor.prototype.initRight = function (ui) {
             var self = this;
-            var duration = self.duration();
-            var drag = new Drag(ui, {
+            new Drag(ui, {
                 move: function (data) {
+                    var duration = self.duration();
                     self.right(self.right() + duration * data.dx / 1000);
 
                     if(self.right() > duration){
@@ -115,12 +112,12 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag"],
             });
         }
 
-        SoundEditor.prototype.play = function () {
+        Editor.prototype.play = function () {
             this.mediaPlayer.audioContainer.currentTime = this.left() / 1000;
             this.mediaPlayer.play();
         }
 
-        SoundEditor.prototype.click = function (data, e) {
+        Editor.prototype.click = function (data, e) {
             var x = e.clientX - e.currentTarget.getBoundingClientRect().left;
             if(x > 1000){
                 x = 1000;
@@ -129,5 +126,29 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag"],
             this.mediaPlayer.play();
         }
 
-        return SoundEditor;
+        Editor.prototype.record = function() {
+            var self = this;
+            var call = sipclient.makeCall("record", {
+                ended: function () {
+                    if (call.id) {
+                        $.post(contextPath + "wav/record", { path: self.path(), uuid: call.id }, function(){
+                            self.load(self.path());
+                        });
+                    }
+                }
+            });
+        }
+
+        Editor.prototype.cut = function () {
+            var self = this;
+            $.post(contextPath + "wav/cut", {
+                path: self.path(),
+                from: Math.round(self.left()),
+                to: Math.round(self.right()),
+            }, function(){
+                self.load(self.path());
+            });
+        }
+
+        return new Editor();
     });
