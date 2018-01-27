@@ -21,7 +21,7 @@ public abstract class MenuPlugin {
         private String url;
         private String icon;
 
-        public List<Menu> children;
+        private List<Menu> children;
 
         public Menu(String title){
             this.title = title;
@@ -36,6 +36,11 @@ public abstract class MenuPlugin {
         public Menu(String title, String url, String icon){
             this(title, url);
             this.icon = icon;
+        }
+
+        public Menu(String title, String url, String icon, List<Menu> children){
+            this(title, url, icon);
+            this.children = children;
         }
 
         public String getTitle() {

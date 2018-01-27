@@ -177,7 +177,7 @@
 				</condition>
 			</extension>
 			<extension name="sipivr">
-				<condition field="destination_number" expression="^(\d+)$">
+				<condition field="destination_number" expression="^(.+)$">
 					<action application="set" data="bypass_media=true"/>
 					<action application="javascript" data="sipivr.js $1"/>
 					<action application="hangup" data=""/>

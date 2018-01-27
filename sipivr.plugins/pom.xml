@@ -10,13 +10,15 @@
     <packaging>pom</packaging>
 
 	<modules>
+        <module>sipivr.date</module>
+        <module>sipivr.number</module>
         <!--<module>sipivr.registration</module>-->
-        <module>sipivr.cbr</module>
+        <!--<module>sipivr.cbr</module>-->
         <module>sipivr.report</module>
         <module>sipivr.schedule</module>
         <module>sipivr.script</module>
         <module>sipivr.sound</module>
-        <module>sipivr.speech</module>
+        <!--<module>sipivr.currency</module>-->
         <module>sipivr.system</module>
         <module>sipivr.voicemail</module>
     </modules>

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.sipivr</groupId>
-    <artifactId>sipivr.sound</artifactId>
+    <artifactId>sipivr.number</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <!--<project.outputDir>../../sipivr.web/target/sipivr.web/WEB-INF/lib</project.outputDir>-->
+        <project.outputDir>../../sipivr.web/target/sipivr.web/WEB-INF/lib</project.outputDir>
     </properties>
 
     <build>
