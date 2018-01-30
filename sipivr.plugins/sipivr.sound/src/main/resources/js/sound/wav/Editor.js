@@ -26,15 +26,6 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
                 return soundPathD;
             }, this);
 
-            this.duration = ko.computed(function(){
-                var wavInfo = this.wavInfo();
-                if(!wavInfo){
-                    return 0;
-                }
-
-                return 1000 * wavInfo.data.length / wavInfo.byteRate;
-            }, this);
-
             this.timeItems = ko.computed(function() {
                 var wavInfo = this.wavInfo();
                 if (!wavInfo) {
@@ -45,12 +36,12 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
                 var step = 0;
                 for (var i = 0; i < steps.length; i++) {
                     step = steps[i];
-                    if (this.duration() / step < 20) {
+                    if (this.wavInfo.duration / step < 20) {
                         break;
                     }
                 }
                 var result = [];
-                for (var i = 0; i <= this.duration(); i+= step) {
+                for (var i = 0; i <= this.wavInfo.duration; i+= step) {
                     result.push(i);
                 }
                 return result;
@@ -76,7 +67,7 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
                 self.right(0);
                 self.path(path);
                 self.wavInfo(wavInfo);
-                self.right(self.duration());
+                self.right(wavInfo.duration);
             });
         }
 
@@ -84,7 +75,7 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
             var self = this;
             new Drag(ui, {
                 move: function (data) {
-                    var duration = self.duration();
+                    var duration = self.wavInfo().duration;
                     self.left(self.left() + duration * data.dx / 1000);
 
                     if(self.left() < 0){
@@ -100,7 +91,7 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
             var self = this;
             new Drag(ui, {
                 move: function (data) {
-                    var duration = self.duration();
+                    var duration = self.wavInfo().duration;
                     self.right(self.right() + duration * data.dx / 1000);
 
                     if(self.right() > duration){
@@ -122,7 +113,7 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
             if(x > 1000){
                 x = 1000;
             }
-            this.mediaPlayer.audioContainer.currentTime = this.duration() * x / 1000 / 1000;
+            this.mediaPlayer.audioContainer.currentTime = this.wavInfo().duration * x / 1000 / 1000;
             this.mediaPlayer.play();
         }
 
@@ -143,8 +134,8 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
             var self = this;
             $.post(contextPath + "wav/cut", {
                 path: self.path(),
-                from: Math.round(self.left()),
-                to: Math.round(self.right()),
+                from: self.left(),
+                to: self.right(),
             }, function(){
                 self.load(self.path());
             });

@@ -55,16 +55,16 @@ public class WavController extends BaseController {
     @RequestMapping(value = "/cut", produces = "application/json")
     @ResponseBody
     public WavInfo cut(@RequestParam("path") String path,
-                              @RequestParam("from") int from,
-                              @RequestParam("to") int to) throws Exception {
+                              @RequestParam("from") double from,
+                              @RequestParam("to") double to) throws Exception {
         String extension = FilenameUtils.getExtension(path);
         if (!extension.equalsIgnoreCase("wav")) {
             throw new UserException();
         }
         WavInfo model = new WavInfo(appConfig.getSoundPath(path));
 
-        int byteFrom =  model.getSubchunk2Size() * from / model.getDuration();
-        int byteTo =  model.getSubchunk2Size() * to / model.getDuration();
+        int byteFrom = (int)(model.getSubchunk2Size() * from / model.getDuration());
+        int byteTo =  (int)(model.getSubchunk2Size() * to / model.getDuration());
         byteFrom = byteFrom - byteFrom % (model.getBitsPerSample() / 8);
         byteTo = byteTo - byteTo % (model.getBitsPerSample() / 8);
         model.cut(byteFrom, byteTo);

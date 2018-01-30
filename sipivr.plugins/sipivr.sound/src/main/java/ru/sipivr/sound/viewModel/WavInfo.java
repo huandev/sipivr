@@ -184,7 +184,7 @@ public class WavInfo {
         return data;
     }
 
-    public int getDuration(){
-        return (int)(1000d * data.length / byteRate);
+    public double getDuration(){
+        return 1000d * data.length / byteRate;
     }
 }
