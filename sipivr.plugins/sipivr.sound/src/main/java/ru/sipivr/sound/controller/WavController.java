@@ -44,9 +44,9 @@ public class WavController extends BaseController {
 
     @RequestMapping(value = "/play", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void play(HttpServletResponse response, @RequestParam("path") String path) throws Exception {
-        File sourceFile = new File(appConfig.getSoundPath(path));
         File targetFile = new File(appConfig.getSoundPath(path.replace(".wav", ".mp3")));
         if(!targetFile.exists()){
+            File sourceFile = new File(appConfig.getSoundPath(path));
             mediaConverter.convert(sourceFile, targetFile);
         }
         playMediaFile(response, targetFile);

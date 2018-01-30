@@ -24,6 +24,22 @@ public class AppConfig {
         return res;
     }
 
+    public String getDbSoundPath(String... parts) {
+        String res = getSoundPath("db");
+        for(String part: parts){
+            res = new File(res, part).getPath();
+        }
+        return res;
+    }
+
+    public String getRecordSoundPath(String... parts) {
+        String res = getSoundPath("record");
+        for(String part: parts){
+            res = new File(res, part).getPath();
+        }
+        return res;
+    }
+
     public String getScriptPath(String... parts) {
         String res = scriptPath;
         for(String part: parts){

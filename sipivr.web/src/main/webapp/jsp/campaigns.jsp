@@ -19,7 +19,10 @@
             <button class="red" data-bind="click: function() { currentCall().session.terminate(); }"><span data-bind="text: currentCall().duration"></span> <i class="icon-phone"></i></button>
             <!-- /ko -->
             <!-- ko if: !currentCall() || currentCall().number != $parent.number -->
-            <button class="green" data-bind="enable: connected() && !currentCall(), click: function() { $data.makeCall($parent.number); }">Call <i class="icon-phone"></i></button>
+            <button class="green" data-bind="enable: connected() && !currentCall(), click: function() { $data.makeCall($parent.number); }">
+                <spring:message code="ui.call"/>
+                <i class="icon-phone"></i>
+            </button>
             <!-- /ko -->
 
             <!-- /ko -->

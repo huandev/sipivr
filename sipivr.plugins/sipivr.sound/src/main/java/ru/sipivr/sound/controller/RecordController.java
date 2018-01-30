@@ -27,7 +27,7 @@ import java.nio.file.StandardCopyOption;
 @RequestMapping("/record")
 public class RecordController extends BaseController {
     private File getFileBySound(Sound s, MediaConverterFormat extension) {
-        return new File(appConfig.getSoundPath("db"), String.format("%s.%s", s.getId(), extension.getValue()));
+        return new File(appConfig.getDbSoundPath(String.format("%s.%s", s.getId(), extension.getValue())));
     }
 
     @RequestMapping(value = "/quick", produces = "application/json")
@@ -48,7 +48,7 @@ public class RecordController extends BaseController {
         User u = getCurrentUser();
         if (u.hasAnyRole(UserRole.ADMIN) || sound.getOwnerId() == u.getId()) {
             File targetFile = getFileBySound(sound, MediaConverterFormat.WAV);
-            File sourceFile = new File(appConfig.getSoundPath(), "record/" + uuid + ".wav");
+            File sourceFile = new File(appConfig.getRecordSoundPath(), uuid + ".wav");
 
             Files.move(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             mediaConverter.convert(targetFile, getFileBySound(sound, MediaConverterFormat.MP3));

@@ -16,7 +16,8 @@ public class File extends ResultPlugin {
     @Override
     public List<AbstractResult> run(final Module module, final String input) {
         return new ArrayList<AbstractResult>() {{
-            add(new ru.sipivr.core.result.Sound(module.getParameters().get(0).getValue() + ".wav"));
+            String path = new java.io.File("db", module.getParameters().get(0).getValue() + ".wav").getPath();
+            add(new ru.sipivr.core.result.Sound(path));
         }};
     }
 }

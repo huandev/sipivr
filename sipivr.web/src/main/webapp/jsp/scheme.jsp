@@ -78,7 +78,7 @@
                 <!-- /ko -->
                 <!-- ko if: !currentCall() -->
                 <button class="green" data-bind="enable: connected(), click: function() { makeCall('${campaign.number}'); }">
-                    Call
+                    <spring:message code="ui.call"/>
                     <span class="icon-phone"></span>
                 </button>
                 <!-- /ko -->

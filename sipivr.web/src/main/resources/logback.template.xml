@@ -23,7 +23,7 @@
         <!--<maxFileSize>1KB</maxFileSize>-->
         <!--</triggeringPolicy>-->
         <encoder>
-            <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%d [%-5level] [%thread] %C{30}.%M line %L: %msg%n</pattern>
         </encoder>
     </appender>
 

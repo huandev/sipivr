@@ -6,7 +6,7 @@
 <tiles:insertDefinition name="defaultTemplate">
     <tiles:putAttribute name="body">
         <style>
-            #wav-tree { position: absolute; width:300px; top:0; left:0; bottom:0;
+            #wav-tree { position: absolute; width:290px; top:0; left:0; bottom:0;
                 overflow-y:auto; padding: 5px; }
             #wav-tree i { color:#009cde; }
             #wav-tree label {cursor:pointer; padding:2px;}

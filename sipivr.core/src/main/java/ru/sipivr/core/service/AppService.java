@@ -19,6 +19,7 @@ import ru.sipivr.core.dao.UserDao;
 import ru.sipivr.core.enums.UserRole;
 import ru.sipivr.core.model.User;
 import ru.sipivr.core.utils.StringUtils;
+import ru.sipivr.core.utils.UserException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -71,9 +72,19 @@ public class AppService {
     }
 
     @PostConstruct
-    public void createRecordFolder(){
+    public void createDbSoundFolder() throws UserException{
         logger.info("");
-        new File(appConfig.getSoundPath(), "record").mkdirs();
+        if (!new File(appConfig.getDbSoundPath()).exists() && !new File(appConfig.getDbSoundPath()).mkdirs()){
+            throw new UserException();
+        }
+    }
+
+    @PostConstruct
+    public void createRecordSoundFolder() throws UserException{
+        logger.info("");
+        if (!new File(appConfig.getRecordSoundPath()).exists() && !new File(appConfig.getRecordSoundPath()).mkdirs()){
+            throw new UserException();
+        }
     }
 
     @PostConstruct
@@ -87,14 +98,15 @@ public class AppService {
 
             if (!StringUtils.isNullOrEmpty(path) && (fileExtension.equals("wav") || fileExtension.equals("mp3"))) {
                 File targetFile = new File(appConfig.getSoundPath(), path);
+                if(!targetFile.exists()) {
+                    if(!targetFile.getParentFile().exists() && !targetFile.getParentFile().mkdirs()) {
+                        throw new UserException();
+                    }
+                    FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
+                    IOUtils.copy(resource.getInputStream(), fileOutputStream);
 
-                targetFile.getParentFile().mkdirs();
-
-                FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
-
-                IOUtils.copy(resource.getInputStream(), fileOutputStream);
-
-                count++;
+                    count++;
+                }
             }
         }
         logger.info("{}", count);

@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.sipivr.core.controller.BaseController;
 import ru.sipivr.core.enums.MediaConverterFormat;
 import ru.sipivr.core.enums.UserRole;
-import ru.sipivr.core.model.User;
 import ru.sipivr.core.widgets.TableSearchFilter;
 import ru.sipivr.core.widgets.TableSearchResult;
 import ru.sipivr.sound.dao.SoundDao;
@@ -21,8 +20,6 @@ import ru.sipivr.sound.model.base.BaseSound;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,17 +35,11 @@ public class SoundController extends BaseController {
     }
 
     private File getFileBySound(int id, MediaConverterFormat extension) {
-        return new File(appConfig.getSoundPath("db", String.format("%s.%s", id, extension.getValue())));
+        return new File(appConfig.getDbSoundPath(String.format("%s.%s", id, extension.getValue())));
     }
 
     @RequestMapping("/index")
     public String sounds() throws Exception {
-        if (!new File(appConfig.getSoundPath("db")).exists() && !new File(appConfig.getSoundPath("db")).mkdirs()){
-            throw new UserException();
-        }
-        if (!new File(appConfig.getSoundPath("record")).exists() && !new File(appConfig.getSoundPath("record")).mkdirs()){
-            throw new UserException();
-        }
         return "/sounds";
     }
 
@@ -121,8 +112,12 @@ public class SoundController extends BaseController {
     @RequestMapping(value = "/play/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void play(HttpServletResponse response, @PathVariable("id") int id) throws Exception {
         Sound sound = dao.get(SoundDao.class).get(id);
-        File file = getFileBySound(sound, MediaConverterFormat.MP3);
-        playMediaFile(response, file);
+        File targetFile = getFileBySound(sound, MediaConverterFormat.MP3);
+        if(!targetFile.exists()){
+            File sourceFile =  getFileBySound(sound, MediaConverterFormat.WAV);
+            mediaConverter.convert(sourceFile, targetFile);
+        }
+        playMediaFile(response, targetFile);
     }
 
     @RequestMapping(value = "/remove/{id}")

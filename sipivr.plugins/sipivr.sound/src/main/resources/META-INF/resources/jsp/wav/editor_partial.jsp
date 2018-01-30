@@ -59,8 +59,14 @@
     <div>
         <div class="player">
             <!-- ko with: mediaPlayer -->
-            <i class="green icon-play" data-bind="click: function() { $root.play(); }, visible: state() != 'Play'"></i>
-            <i class="red icon-pause" data-bind="click: pause, visible: state() == 'Play'"></i>
+            <button class="green" data-bind="click: function() { $root.play(); }, visible: state() != 'Play'">
+                <spring:message code="ru.sipivr.sound.ui.play"/>
+                <i class="icon-play" ></i>
+            </button>
+            <button class="red" data-bind="click: pause, visible: state() == 'Play'">
+                <spring:message code="ru.sipivr.sound.ui.pause"/>
+                <i class="icon-pause"></i>
+            </button>
             <!-- /ko -->
 
             <!-- ko with: sipclient -->
@@ -72,13 +78,13 @@
                 <!-- /ko -->
                 <!-- ko if: connected() && !currentCall() -->
                 <button class="green" data-bind="enable: connected(), click: function() { $root.record(); }">
-                    Record
+                    <spring:message code="ru.sipivr.sound.ui.record"/>
                     <span class="icon-mic"></span>
                 </button>
                 <!-- /ko -->
             <!-- /ko -->
 
-            <button class="red" data-bind="enable: left() > 0 || right() < duration(), click: cut">
+            <button class="red" data-bind="visible: left() > 0 || right() < duration(), click: cut">
                 Вырезать выбранный участок
                 <span class="icon-cut"></span>
             </button>
