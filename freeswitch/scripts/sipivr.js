@@ -34,6 +34,9 @@ var manager = {
         log.info("input: " + input);
         return input;
     },
+    ifVariable: function(name, method, value) {
+        
+    },
     record: function(folder, duration){
         if(session.ready()) {
             session.execute("record", folder + "/${sip_call_id}.wav " + duration + " 200 3");
@@ -191,6 +194,10 @@ function performModule(item) {
                 break;
             case "Conference":
                 manager.conference(item.name);
+                return true;
+                break;
+            case "IfVariable":
+                manager.ifVariable(item.name, item.method, item.value);
                 return true;
                 break;
             case "Input":

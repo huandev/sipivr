@@ -1,4 +1,4 @@
-package ru.sipivr.script.rest;
+package ru.sipivr.system.rest;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.security.access.prepost.PreAuthorize;

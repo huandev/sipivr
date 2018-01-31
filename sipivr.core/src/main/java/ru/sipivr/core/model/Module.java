@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Karpukhin on 01.01.2016.
@@ -100,13 +101,21 @@ public class Module {
         return null;
     }
 
-    public int getTransitionNextMenuId(int index){
-        if(getTransitions() != null && getTransitions().size() > 0) {
+    public String getParameterValue(String name){
+        Optional<ModuleParameter> parameter = getParameters().stream().filter(f->f.getName().equalsIgnoreCase(name)).findFirst();
+        if(parameter.isPresent()){
+            return parameter.get().getValue();
+        }
+        return null;
+    }
+
+    public Integer getTransitionNextMenuId(int index){
+        if(getTransitions() != null && getTransitions().size() > index) {
             ModuleTransition moduleTransition = getTransitions().get(index);
             if(moduleTransition.getNextMenu() != null) {
-                return getTransitions().get(index).getNextMenu().getId();
+                return moduleTransition.getNextMenu().getId();
             }
         }
-        return 0;
+        return null;
     }
 }

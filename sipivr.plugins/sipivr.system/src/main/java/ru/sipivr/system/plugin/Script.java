@@ -1,4 +1,4 @@
-package ru.sipivr.script.plugin;
+package ru.sipivr.system.plugin;
 
 import org.springframework.stereotype.Service;
 import ru.sipivr.core.model.Module;

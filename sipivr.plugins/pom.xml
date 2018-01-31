@@ -16,7 +16,6 @@
         <!--<module>sipivr.cbr</module>-->
         <module>sipivr.report</module>
         <module>sipivr.schedule</module>
-        <module>sipivr.script</module>
         <module>sipivr.sound</module>
         <!--<module>sipivr.currency</module>-->
         <module>sipivr.system</module>
