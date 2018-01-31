@@ -5,9 +5,9 @@
     <div style="padding: 5px;">
         <span>path:</span>
         <span data-bind="text: path"></span>,
-        <span>duration:</span>
-        <span data-bind="text: duration"></span>ms,
         <!-- ko with: wavInfo -->
+            <span>duration:</span>
+            <span data-bind="text: duration"></span>ms,
             <span>numChannels:</span>
             <span data-bind="text: numChannels"></span>,
             <span>byteRate:</span>
@@ -22,22 +22,22 @@
             <g data-bind="attr: { transform: 'translate(0, 256)' }">
                 <rect width="1020" height="20" fill="#ccc" transform="translate(-10,0)"></rect>
                 <g data-bind="foreach: timeItems">
-                    <text data-bind="text: $data, attr: { x: 1000 * ($data / $root.duration()) }" y = "14" font-size="10" text-anchor="middle"></text>
-                    <path data-bind="attr: { d: 'M ' + 1000 * ($data / $root.duration()) +' 0 L ' + 1000 * ($data / $root.duration()) +' -256' }" stroke="#ccc" stroke-width="1"></path>
-                    <path data-bind="attr: { d: 'M ' + 1000 * ($data / $root.duration()) +' 0 L ' + 1000 * ($data / $root.duration()) +' -5' }" stroke="#000" stroke-width="2"></path>
+                    <text data-bind="text: $data, attr: { x: 1000 * ($data / $root.wavInfo().duration) }" y = "14" font-size="10" text-anchor="middle"></text>
+                    <path data-bind="attr: { d: 'M ' + 1000 * ($data / $root.wavInfo().duration) +' 0 L ' + 1000 * ($data / $root.wavInfo().duration) +' -256' }" stroke="#ccc" stroke-width="1"></path>
+                    <path data-bind="attr: { d: 'M ' + 1000 * ($data / $root.wavInfo().duration) +' 0 L ' + 1000 * ($data / $root.wavInfo().duration) +' -5' }" stroke="#000" stroke-width="2"></path>
                 </g>
             </g>
             <g>
-                <rect height="256" data-bind="attr: { width: 1000 * left() / duration() }" fill="red" fill-opacity="0.1"></rect>
-                <g data-bind="attr: { transform: 'translate(' + (1000 * left() / duration() - 2) + ', 0)' }">
+                <rect height="256" data-bind="attr: { width: 1000 * left() / wavInfo().duration}" fill="red" fill-opacity="0.1"></rect>
+                <g data-bind="attr: { transform: 'translate(' + (1000 * left() / wavInfo().duration - 2) + ', 0)' }">
                     <path d="M0 0 L-5 5 L-5 15 L5 15 L5 5 Z"  transform="translate(0, 276)"
                           fill="#ccc" stroke="#666" style="cursor: pointer;"
                           data-bind="event: initLeft($element)" />
                     <line x1="0" y1="0" x2="0" y2="256" stroke="red" stroke-width="2"/>
                 </g>
             </g>
-            <g data-bind="attr: { transform: 'translate(' + 1000 * right() / duration() + ',0)' }">
-                <rect height="256" data-bind="attr: { width: 1000 * (duration() - right()) / duration() }" fill="red" fill-opacity="0.1"></rect>
+            <g data-bind="attr: { transform: 'translate(' + 1000 * right() / wavInfo().duration + ',0)' }">
+                <rect height="256" data-bind="attr: { width: 1000 * (wavInfo().duration - right()) / wavInfo().duration }" fill="red" fill-opacity="0.1"></rect>
 
                 <path d="M0 0 L-5 5 L-5 15 L5 15 L5 5 Z"  transform="translate(0, 276)"
                       fill="#ccc" stroke="#666" style="cursor: pointer;"
@@ -47,7 +47,7 @@
 
             <!-- ko if: mediaPlayer.state() !== 'Stop' -->
             <rect height="256" width="2" fill="green"
-                  data-bind="attr: { transform: 'translate(' + 1000 * 1000 * mediaPlayer.time() / duration() + ',0)' }"></rect>
+                  data-bind="attr: { transform: 'translate(' + 1000 * 1000 * mediaPlayer.time() / wavInfo().duration + ',0)' }"></rect>
             <!-- /ko -->
             <g data-bind="attr: { transform: 'translate(0, 128) scale(' + 1000 / (wavInfo().data.length / 2) + ', 1)' }">
                 <path data-bind="attr: { d: soundPathD }" stroke="black" stroke-width="1" transform="scale(1, 0.0039)"></path>
@@ -84,7 +84,7 @@
                 <!-- /ko -->
             <!-- /ko -->
 
-            <button class="red" data-bind="visible: left() > 0 || right() < duration(), click: cut">
+            <button class="red" data-bind="visible: left() > 0 || right() < wavInfo().duration, click: cut">
                 Вырезать выбранный участок
                 <span class="icon-cut"></span>
             </button>
