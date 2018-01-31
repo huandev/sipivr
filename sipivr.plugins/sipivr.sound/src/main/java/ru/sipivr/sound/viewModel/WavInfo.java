@@ -48,12 +48,8 @@ public class WavInfo {
 
     public void cut(int from, int to){
         byte[] newData = new byte[subchunk2Size - (to - from)];
-        for(int i = 0; i < from; i++){
-            newData[i] = data[i];
-        }
-        for(int i = to; i < subchunk2Size; i++){
-            newData[i - (to - from)] = data[i];
-        }
+        System.arraycopy(data, 0, newData, 0, from);
+        System.arraycopy(data, to, newData, to - (to - from), subchunk2Size - to);
         subchunk2Size = newData.length;
         data = newData;
     }

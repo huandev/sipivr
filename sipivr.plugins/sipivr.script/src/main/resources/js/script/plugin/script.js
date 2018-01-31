@@ -15,6 +15,7 @@ define(["knockout", "editor/Module", "editor/ElementParameter", "editor/ToolbarI
             var parameter = new ElementParameter({ name: "file", value: "", title: messages[key + ".file"] });
             parameter.options = scripts;
             this.parameters.push(parameter);
+            this.parameters.push(new ElementParameter({ name: "arguments", value: "", title: messages[key + ".arguments"] }));
 
             this.icon("icon-tag");
         }

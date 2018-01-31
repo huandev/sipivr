@@ -16,7 +16,7 @@ public class Script extends ResultPlugin {
     @Override
     public List<AbstractResult> run(final Module module, final String input) {
         return new ArrayList<AbstractResult>() {{
-            add(new ru.sipivr.core.result.Script(module.getParameters().get(0).getValue()));
+            add(new ru.sipivr.core.result.Script(module.getParameters().get(0).getValue(), module.getParameters().get(1).getValue()));
         }};
     }
 }

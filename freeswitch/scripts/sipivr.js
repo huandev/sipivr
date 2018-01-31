@@ -50,13 +50,17 @@ var manager = {
         log.info("response length " + (response ? response.length : 0));
         return response;
     },
+    setVariable: function(name, value){
+        log.info("setVariable " + name + "=" + value);
+        session.setVariable(name, value);
+    },
     shout: function (url) {
         log.info("shout: " + url);
         session.streamFile("shout://" + url + ".mp3");
     },
-    script: function(file){
-        log.info("script: " + file);
-        session.execute("javascript", file);
+    script: function(file, arguments){
+        log.info("script: " + file + " " + arguments);
+        session.execute("javascript", file + " " + arguments);
     },
     sleep: function (duration) {
         log.info("sleep: " + duration);
@@ -85,7 +89,7 @@ var settings = {
     sipCallId: session.getVariable("sip_call_id"),
     callerId: session.getVariable("caller_id_number"),
     calledId: session.getVariable("destination_number"),
-    number: argv
+    number: argv[0]
 };
 
 var inputRunned = false;
@@ -181,8 +185,8 @@ function performModule(item) {
                 if (compare(item.value, input)) {
                     if(item.nextMenuId) {
                         transition(item.nextMenuId);
+                        return true;
                     }
-                    return true;
                 }
                 break;
             case "Conference":
@@ -204,7 +208,10 @@ function performModule(item) {
                 }
                 break;
             case "Script":
-                manager.script(item.path);
+                manager.script(item.path, item.arguments);
+                break;
+            case "SetVariable":
+                manager.setVariable(item.name, item.value);
                 break;
             case "Sleep":
                 manager.sleep(item.duration);
@@ -224,8 +231,8 @@ function performModule(item) {
             case "Transition":
                 if(item.nextMenuId) {
                     transition(item.nextMenuId);
+                    return true;
                 }
-                return true;
                 break;
             case "Tts":
                 break;

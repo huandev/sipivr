@@ -1,6 +1,5 @@
 package ru.sipivr.system.plugin;
 
-import org.springframework.stereotype.Service;
 import ru.sipivr.core.model.Module;
 import ru.sipivr.core.plugin.ResultPlugin;
 import ru.sipivr.core.result.AbstractResult;
@@ -9,14 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Karpukhin on 07.01.2016.
+ * Created by okarpukhin on 31.01.2018.
  */
-@Service
-public class Transition extends ResultPlugin {
+public class SetVariable extends ResultPlugin {
     @Override
     public List<AbstractResult> run(final Module module, final String input) {
         return new ArrayList<AbstractResult>() {{
-            add(new ru.sipivr.core.result.Transition(module.getTransitions().size() == 0 ? 0 : module.getTransitions().get(0).getNextMenu().getId()));
+            String name = module.getParameterValue(0);
+            String value = module.getParameterValue(1);
+            add(new ru.sipivr.core.result.SetVariable(name, value));
         }};
     }
 }
