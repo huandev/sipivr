@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class ResultPlugin {
     private final String scriptPath;
 
-    public ResultPlugin(){
+    public ResultPlugin() {
         scriptPath = this.getClass().getName().replace("ru.sipivr.", "").replace('.', '/').toLowerCase();
     }
 

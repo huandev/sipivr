@@ -11,8 +11,8 @@
 
     <modules>
         <module>sipivr.core</module>
-        <module>sipivr.web</module>
         <module>sipivr.plugins</module>
+        <module>sipivr.web</module>
     </modules>
 
     <properties>

@@ -37,11 +37,6 @@
             <artifactId>sipivr.number</artifactId>
             <version>0.0.1</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>ru.sipivr</groupId>-->
-            <!--<artifactId>sipivr.cbr</artifactId>-->
-            <!--<version>0.0.1</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>ru.sipivr</groupId>
             <artifactId>sipivr.report</artifactId>

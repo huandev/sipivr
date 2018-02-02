@@ -1,6 +1,6 @@
 define(["knockout", "editor/Module", "editor/ElementParameter", "editor/ToolbarItem", "messages"],
     function (ko, Module, ElementParameter, ToolbarItem, messages) {
-        var key = "ru.sipivr.script.plugin.script";
+        var key = "ru.sipivr.system.plugin.script";
 
         var scripts = ko.observableArray();
         $.post(contextPath + "api/scripts", function(data){

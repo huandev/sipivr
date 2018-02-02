@@ -35,7 +35,39 @@ var manager = {
         return input;
     },
     ifVariable: function(name, method, value) {
-        
+        var res = false;
+        switch(method){
+            case "Equal":
+                res = value == session.getVariable(name);
+                break;
+            case "NotEqual":
+                res = value != session.getVariable(name);
+                break;
+            case "LessThan":
+                res = session.getVariable(name) < value;
+                break;
+            case "LessThanOrQqual":
+                res = session.getVariable(name) <= value;
+                break;
+            case "GreaterThan":
+                res = session.getVariable(name) > value;
+                break;
+            case "GreaterThanOrQqual":
+                res = session.getVariable(name) >= value;
+                break;
+            case "Match":
+                res = new RegExp(value).test(session.getVariable(name));
+                break;
+            case "NotMatch":
+                res = !new RegExp(value).test(session.getVariable(name));
+                break;
+            default:
+                log.error("Unknown method " + method);
+                break;
+        }
+
+        log.info(name + " " + method + " " + value + " is " + res);
+        return res;
     },
     record: function(folder, duration){
         if(session.ready()) {
@@ -188,8 +220,8 @@ function performModule(item) {
                 if (compare(item.value, input)) {
                     if(item.nextMenuId) {
                         transition(item.nextMenuId);
-                        return true;
                     }
+                    return true;
                 }
                 break;
             case "Conference":
@@ -197,8 +229,12 @@ function performModule(item) {
                 return true;
                 break;
             case "IfVariable":
-                manager.ifVariable(item.name, item.method, item.value);
-                return true;
+                if(manager.ifVariable(item.name, item.method, item.value)){
+                    if(item.nextMenuId) {
+                        transition(item.nextMenuId);
+                    }
+                    return true;
+                }
                 break;
             case "Input":
                 inputRunned = true;
@@ -238,9 +274,8 @@ function performModule(item) {
             case "Transition":
                 if(item.nextMenuId) {
                     transition(item.nextMenuId);
-                    return true;
                 }
-                break;
+                return true;
             case "Tts":
                 break;
         }
