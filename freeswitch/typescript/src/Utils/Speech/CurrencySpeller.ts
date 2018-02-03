@@ -5,7 +5,7 @@ import { NumberSpeller } from "./NumberSpeller";
 import { Case, NumberType, Gender, Currency } from "./Enums";
 
 export class CurrencySpeller {
-    private static folder = "sipivr.speech.currency";
+    private static folder = "sipivr.currency";
     private static readonly currencyNames: { [key: string]: { major: Noun, minor: Noun } } = {};
 
     static initialize() {

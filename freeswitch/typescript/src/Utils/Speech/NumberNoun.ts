@@ -41,7 +41,7 @@ export class NumberNoun extends Noun {
 
     getFileName(): string {
         let parts = [
-            "sipivr.speech.number",
+            "sipivr.number",
             this.NumberType,
             this.Case,
             this.GrammaticalNumber,

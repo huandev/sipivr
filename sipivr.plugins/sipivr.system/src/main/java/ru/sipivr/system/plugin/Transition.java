@@ -16,7 +16,7 @@ public class Transition extends ResultPlugin {
     @Override
     public List<AbstractResult> run(final Module module, final String input) {
         return new ArrayList<AbstractResult>() {{
-            add(new ru.sipivr.core.result.Transition(module.getTransitions().size() == 0 ? 0 : module.getTransitions().get(0).getNextMenu().getId()));
+            add(new ru.sipivr.core.result.Transition(module.getTransitionNextMenuId(0)));
         }};
     }
 }

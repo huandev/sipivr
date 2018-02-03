@@ -1,22 +1,23 @@
-import { Logger } from "./Utils/Logger";
-import { Manager } from "./Utils/Manager";
-import { Currency } from "./Utils/Speech/Enums";
-import { SpeechManager } from "./Utils/Speech/SpeechManager";
+import { SipIvr } from "./Utils/SipIvr";
 
-let logger = new Logger();
+use("CURL");
+console_log("info", "start");
 
-let manager = new Manager(logger);
+let manager = new SipIvr({
+    Host: "https://127.0.0.1:443",
+    Cred: "${user}:${password}",
+});
 
-manager.answer();
+session.setHangupHook(() => {
+    manager.disconnect();
+});
 
-//manager.script("glassfish.ts.js")
+manager.transition();
 
-let speechManager = new SpeechManager(manager);
-speechManager.percent(42);
-speechManager.number(0.1123);
-speechManager.date(new Date());
-speechManager.currency(123.23, Currency.RUB);
+console_log("info", "end");
 
+if (session.ready()) {
+    manager.disconnect();
+}
 
 exit();
-

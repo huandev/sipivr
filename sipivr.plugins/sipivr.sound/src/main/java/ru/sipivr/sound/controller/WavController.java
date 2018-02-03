@@ -4,7 +4,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.sipivr.core.controller.BaseController;
 import ru.sipivr.core.enums.MediaConverterFormat;
 import ru.sipivr.core.utils.UserException;
@@ -109,5 +111,34 @@ public class WavController extends BaseController {
             mp3File.delete();
         }
         return new WavInfo(target);
+    }
+
+    @RequestMapping(value = "/updateFile", method = RequestMethod.POST)
+    @Transactional(readOnly = false, rollbackFor = java.lang.Exception.class)
+    @ResponseBody
+    public WavInfo updateFile(@RequestParam("file") MultipartFile file, @RequestParam("path") String path) throws Exception {
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        MediaConverterFormat format = MediaConverterFormat.valueOf(extension.toUpperCase());
+        if (MediaConverterFormat.valueOf(extension.toUpperCase()) == null) {
+            throw new UserException("format not supported");
+        }
+        String target = appConfig.getSoundPath(path);
+        File targetFile = new File(target);
+        file.transferTo(targetFile);
+
+        if (format.equals(MediaConverterFormat.MP3)) {
+            File wavFile = new File(target.replace(".mp3", ".wav"));
+            mediaConverter.convert(targetFile, wavFile);
+            return new WavInfo(wavFile.getPath());
+        }
+        else if (format.equals(MediaConverterFormat.WAV)) {
+            File mp3File = new File(target.replace(".wav", ".mp3"));
+            if(mp3File.exists()){
+                mp3File.delete();
+            }
+            return new WavInfo(target);
+        } else {
+            throw new UserException("format not supported");
+        }
     }
 }

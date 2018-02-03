@@ -88,6 +88,11 @@
                 Вырезать выбранный участок
                 <span class="icon-cut"></span>
             </button>
+
+            <button class="link" data-bind="click: function() { $($element).next().click(); }">
+                <spring:message code="ru.sipivr.sound.newFile"/>
+            </button>
+            <input type="file" style="display: none;" data-bind="event: { change: function() { $root.fileDropHandler($element.files); }}" accept=".wav,.mp3"/>
         </div>
     </div>
 </div>

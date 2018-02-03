@@ -42,13 +42,13 @@ export class Noun extends LexicalUnit {
         let res: string;
         switch (this.Tag) {
             case "Separator": //слово "целых"
-                res = "sipivr.speech.number/int_" + this.Case + "_" + this.GrammaticalNumber;
+                res = "sipivr.number/int_" + this.Case + "_" + this.GrammaticalNumber;
                 break;
             case "Minus":
-                res = "sipivr.speech.number/minus";
+                res = "sipivr.number/minus";
                 break;
             case "Point":
-                res = "sipivr.speech.number/point";
+                res = "sipivr.number/point";
                 break;
             default:
                 let parts: string[] = this.Tag !== null ? [this.Tag] : [];

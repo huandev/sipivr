@@ -141,5 +141,34 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
             });
         }
 
+        Editor.prototype.fileDropHandler = function(files) {
+            var self = this;
+
+            var data = new FormData();
+
+            if(files.length == 1){
+                var fileExtension = files[0].name.split('.').pop();
+
+                if(fileExtension != 'wav' && fileExtension != 'mp3') {
+                    $.notify(messages["model.sound.error.extension"], { className: "error", position: "right bottom" });
+                    return;
+                }
+                data.append('path', self.path());
+                data.append('file', files[0]);
+
+                $.ajax({
+                    url: contextPath + "wav/updateFile",
+                    type: "POST",
+                    data: data,
+                    cashe: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        self.load(self.path());
+                    }
+                });
+            }
+        }
+
         return new Editor();
     });

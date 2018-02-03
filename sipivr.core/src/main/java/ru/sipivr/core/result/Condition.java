@@ -4,15 +4,15 @@ package ru.sipivr.core.result;
  * Created by Karpukhin on 01.01.2016.
  */
 public class Condition extends AbstractResult {
-    private int nextMenuId;
+    private Integer nextMenuId;
     private String value;
 
-    public Condition(int nextMenuId, String value) {
+    public Condition(Integer nextMenuId, String value) {
         this.nextMenuId = nextMenuId;
         this.value = value;
     }
 
-    public int getNextMenuId() {
+    public Integer getNextMenuId() {
         return nextMenuId;
     }
 

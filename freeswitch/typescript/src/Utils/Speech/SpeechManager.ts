@@ -1,4 +1,3 @@
-import { Manager } from "../Manager";
 import { NumberSpeller } from "./NumberSpeller";
 import { DateSpeller } from "./DateSpeller";
 import { CurrencySpeller } from "./CurrencySpeller";
@@ -7,16 +6,16 @@ import { Currency } from "./Enums";
 import { LexicalUnit } from "./LexicalUnit";
 
 export class SpeechManager {
-    private Manager: Manager;
+    Sound: (name: string, inputMode?: boolean) => string;
 
-    constructor(manager: Manager) {
-        this.Manager = manager;
+    constructor(sound: (name: string, inputMode?: boolean) => string) {
+        this.Sound = sound;
     }
 
     private sound(units: LexicalUnit[], inputMode?: boolean): string {
         let input: string = null;
         units.every(f => {
-            input = this.Manager.sound(f.getFileName(), inputMode);
+            input = this.Sound(f.getFileName(), inputMode);
             return input === null;
         });
         return input;
