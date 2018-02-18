@@ -5,12 +5,12 @@ declare function include(script: string);
 declare function apiExecute(application: string, data?: string);
 
 declare class CURL {
-  //new CURL().run("GET", url, data, function() {
-  //          return arguments[0];
-  //     }, null, cred);
-  /**https://wiki.freeswitch.org/wiki/Run */
-  run(method: "GET" | "POST", url: string, request_data?: string, callback?: (response: string, callback_arg?: any) => any, callback_arg?: any, credentials?: string, timeout?: number, content_type?: string);
-} 
+    //new CURL().run("GET", url, data, function() {
+    //          return arguments[0];
+    //     }, null, cred);
+    /**https://wiki.freeswitch.org/wiki/Run */
+    run(method: "GET" | "POST", url: string, request_data?: string, callback?: (response: string, callback_arg?: any) => any, callback_arg?: any, credentials?: string, timeout?: number, content_type?: string);
+}
 
 declare class ODBC {
     constructor(dsn: string, login: string, password: string);
@@ -21,7 +21,7 @@ declare class ODBC {
     execute(query: string): void;
     nextRow(): any;
     getData(): any;
-} 
+}
 
 declare var argv: string[];
 
@@ -37,7 +37,7 @@ declare var session: {
     /** https://wiki.freeswitch.org/wiki/Session_streamFile */
     streamFile(
         name: string,
-        callback?: (session: { name: string }, type: "dtmf", digits: { digit: string, duration: number }, arg: any) => (string | boolean),
+        callback?: (streamSession: { name: string }, type: "dtmf", digits: { digit: string, duration: number }, arg: any) => (string | boolean),
         callback_args?: any,
         starting_sample_count?: number): void;
 

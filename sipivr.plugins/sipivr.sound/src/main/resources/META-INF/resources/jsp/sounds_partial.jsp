@@ -2,14 +2,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <style>
-    #sound-index {width:1000px; height: 100%; font-size: 0.9em;}
+    #sound-index {width:1220px; font-size: 0.9em; position: relative; }
 
-    #sound-index form {position: absolute; background:#64a70b; width:100%; height:100%; top:0; left:0; opacity:0.5; z-index:100;}
-    #sound-index input[type=file] { width:100%; height: 100%; opacity: 0; position: absolute;}
+    #sound-index form {position: absolute; width:100%; height:100%; top:0; left:0; opacity:0.5; z-index:-1; }
+    #sound-index.drag form { background:#64a70b; z-index: 100; }
+    #sound-index form > input[type=file] { display: block; width:100%; height: 100%; opacity: 0; }
 
     #sound-index .progress {width:120px;}
 
-    #sound-index table { width:1220px; border: 1px solid #ccc;}
+    #sound-index table { width:1220px; border: 1px solid #ccc; z-index: 0;}
     #sound-index thead { background: #f0f0f0; border-bottom: 1px solid #ccc; }
     #sound-index tfoot { background: #f0f0f0; border-top: 1px solid #ccc; }
     #sound-index tbody { max-height: 500px; min-height: 500px; }
@@ -32,8 +33,8 @@
     </div>
 </script>
 
-<div id="sound-index" style="display: none;" data-bind="visible: $data, fileDrop: 'fileDropContainer', fileDropHandler: fileDropHandler">
-    <form method="POST" id="fileDropContainer" enctype="multipart/form-data">
+<div id="sound-index" style="display: none;" data-bind="visible: $data, fileDrop: { handler: fileDropHandler }">
+    <form method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept=".mp3,.wav,audio/*" multiple/>
     </form>
 
@@ -53,7 +54,6 @@
                     <!-- ko if: $root.selectMode() -->
                     <button class="blue" data-bind="click: function() { $root.selectMode(false); }"><spring:message code="ui.cancel"/></button>
                     <!-- /ko -->
-                    <input type="file" style="display: none;" data-bind="event: { change: function() { fileDropHandler($element.files); }}" multiple  accept=".wav,.mp3"/>
 
                     <!-- ko with: sipclient -->
                     <!-- ko if: connected -->
@@ -129,6 +129,7 @@
                     <spring:message code="ru.sipivr.sound.newFile"/>
                 </button>
                 <input type="file" style="display: none;" data-bind="event: { change: function() { $root.fileDropHandler($element.files, $data); }}" accept=".wav,.mp3"/>
+
                 <!-- ko if: $root.sipclient.connected() -->
                 <button class="link" data-bind="click: function() { $root.record($data); }"><i class="icon-mic"></i> <spring:message code="ru.sipivr.sound.plugin.quickrecord"/></button>
                 <!-- /ko -->

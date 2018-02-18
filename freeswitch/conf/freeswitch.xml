@@ -24,6 +24,9 @@
 	<X-PRE-PROCESS cmd="set" data="ringback=%(800,3200,425)"/>
 	<X-PRE-PROCESS cmd="set" data="domain=$${local_ip_v4}"/>
 
+	<X-PRE-PROCESS cmd="set" data="SipIvr.Url=https://127.0.0.1"/>
+	<X-PRE-PROCESS cmd="set" data="SipIvr.Cred="/>
+
 	<!-- SIP and TLS settings -->
 	<!-- <X-PRE-PROCESS cmd="set" data="sip_tls_version=sslv23"/>-->
 
@@ -177,8 +180,7 @@
 				</condition>
 			</extension>
 			<extension name="sipivr">
-				<condition field="destination_number" expression="^(.+)$">
-					<action application="set" data="bypass_media=true"/>
+				<condition field="destination_number" expression="^(\d+)(\D.+)?$">
 					<action application="javascript" data="sipivr.ts.js $1"/>
 					<action application="hangup" data=""/>
 				</condition>

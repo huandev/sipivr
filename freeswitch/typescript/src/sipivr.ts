@@ -4,8 +4,8 @@ use("CURL");
 console_log("info", "start");
 
 let manager = new SipIvr({
-    Host: "https://127.0.0.1:443",
-    Cred: "${user}:${password}",
+    Host: session.getVariable("SipIvr.Url"),
+    Cred: session.getVariable("SipIvr.Cred"),
 });
 
 session.setHangupHook(() => {

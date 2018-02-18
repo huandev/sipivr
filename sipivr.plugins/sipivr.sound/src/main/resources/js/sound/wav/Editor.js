@@ -99,7 +99,7 @@ define(["knockout", "messages", "widgets/MediaPlayerView", "utils/Drag", "widget
                     } else if(self.right() < self.left()){
                         self.right(self.left());
                     }
-                },
+                }
             });
         }
 

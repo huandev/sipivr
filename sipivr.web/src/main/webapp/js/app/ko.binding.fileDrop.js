@@ -2,32 +2,38 @@ define(["knockout", "utils/DOM"], function(ko, DOM) {
     ko.bindingHandlers.fileDrop = {
         init: function(element, valueAccessor, allBindings, viewModel)
         {
-            var self = this;
-
-            var formId = valueAccessor();
-            var formElement = document.getElementById(formId);
-            formElement.style.display = "none";
+            var data = valueAccessor();
 
             DOM.attachEvent(element, "dragover", function () {
-                formElement.style.display = "block";
+                $(element).addClass("drag");
                 return false;
             });
 
-            DOM.attachEvent(formElement, "dragleave", function () {
-                formElement.style.display = "none";
+            DOM.attachEvent(element, "dragleave", function () {
+                $(element).removeClass("drag");
                 return false;
             });
 
-            DOM.attachEvent(formElement, "drop", function (e) {
+            DOM.attachEvent(element, "drop", function (e) {
                 if (e.preventDefault) {
                     e.preventDefault();
                 } else {
                     e.returnValue = false;
                 }
-                formElement.style.display = "none";
+                $(element).removeClass("drag");
 
-                allBindings.get("fileDropHandler").call(viewModel, e.dataTransfer.files);
+                console.log(e.dataTransfer.files);
+                data.handler.call(viewModel, e.dataTransfer.files);
             });
+
+            if ($("input[type=file]", element).length) {
+                DOM.attachEvent($("input[type=file]", element)[0], "change", function (e) {
+                    $(element).removeClass("drag");
+
+                    console.log(e.target.files);
+                    data.handler.call(viewModel, e.target.files);
+                });
+            }
         }
     };
 });

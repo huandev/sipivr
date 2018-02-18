@@ -1,10 +1,11 @@
+import { Sound } from "./Sound";
+
 declare type ModuleType = "Bridge" | "Condition" | "Conference" | "IfVariable" | "Input" | "Record" | "Script" | "SetVariable" | "Sleep" | "Sound" | "Transfer" | "Transition";
 declare type Module = { type: ModuleType };
 
 export class SipIvr {
     private inputRunned = false;
     private input: string = null;
-    private soundInput: string = null;
     private transferNumber: string = null;
 
     private callId: number = null;
@@ -31,10 +32,11 @@ export class SipIvr {
     }
 
     transition(menuId?: number) {
-        this.inputRunned = false;
-
         if (session.ready()) {
             console_log("info", "transition: " + menuId);
+
+            this.inputRunned = false;
+            Sound.clearInput();
 
             let url = this.Settings.Host + "/service";
             let data = "sipCallId=" + this.sipCallId + "&callerId=" + this.callerId + "&calledId=" + this.calledId;
@@ -123,9 +125,8 @@ export class SipIvr {
                     break;
                 case "Input":
                     this.inputRunned = true;
-                    if (this.soundInput) {
-                        this.input = this.soundInput;
-                        this.soundInput = null;
+                    if (Sound.hasInput()) {
+                        this.input = Sound.getInput();
                     } else {
                         this.input = this.getInput(item["duration"], item["length"]);
                     }
@@ -145,9 +146,7 @@ export class SipIvr {
                     this.sleep(item["duration"]);
                     break;
                 case "Sound":
-                    if (!this.soundInput) {
-                        this.soundInput = this.sound(item["path"]);
-                    }
+                    Sound.play(item["path"]);
                     break;
                 case "Transfer":
                     this.transfer(item["number"]);
@@ -251,18 +250,6 @@ export class SipIvr {
     sleep(duration: number) {
         console_log("info", "sleep: " + duration);
         session.execute("sleep", duration);
-    }
-    sound(name: string, inputMode = true): string {
-        console_log("info", "sound: " + name + ", inputMode " + inputMode);
-        let input: string = null;
-        session.streamFile(name, (session, type, digits, arg) => {
-            if (inputMode) {
-                input = digits.digit;
-                console_log("info", "sound input: " + input);
-            }
-            return !inputMode;
-        }, false);
-        return input;
     }
     transfer(number: string) {
         console_log("info", "transfer: " + number);

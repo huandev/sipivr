@@ -1,6 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<style>
+    #wav-editor form { display:block; left:0; top:0; width: 100%; height: 100%; opacity: 0.5; position:absolute; z-index: 100;  }
+    #wav-editor .drag form { background: #64a70b; }
+    #wav-editor form input[type=file] { display: block; width: 100%; height: 100%; opacity: 0;  }
+</style>
+
 <div id="wav-editor" data-bind="if: wavInfo, visible: wavInfo" style="width:1020px; text-align: center;display:none;">
     <div style="padding: 5px;">
         <span>path:</span>
@@ -89,16 +95,23 @@
                 <span class="icon-cut"></span>
             </button>
 
-            <button class="link" data-bind="click: function() { $($element).next().click(); }">
-                <spring:message code="ru.sipivr.sound.newFile"/>
-            </button>
-            <input type="file" style="display: none;" data-bind="event: { change: function() { $root.fileDropHandler($element.files); }}" accept=".wav,.mp3"/>
+
+            <div data-bind="fileDrop: { handler: function(files) { $root.fileDropHandler(files); } }"
+                    style="position: relative; display: inline-block; height: 28px;">
+                <form>
+                    <input type="file" accept=".wav,.mp3"/>
+                </form>
+                <button class="link">
+                    <spring:message code="ru.sipivr.sound.newFile"/>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    require(["knockout", "utils/SVGTemplateEngine", "sound/wav/Editor"], function(ko, SVGTemplateEngine, editor){
+    require(["knockout", "utils/SVGTemplateEngine", "sound/wav/Editor", "app/ko.binding.fileDrop"], function(ko, SVGTemplateEngine, editor){
         if(!window.SVGTemplateEngine) {
             window.SVGTemplateEngine = new SVGTemplateEngine();
         }
