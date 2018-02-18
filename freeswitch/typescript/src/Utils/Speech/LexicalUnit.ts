@@ -17,6 +17,11 @@ export abstract class LexicalUnit {
         throw new Error("LexicalUnit.clone");
     }
 
+    setCase(value: Case): LexicalUnit {
+        this.Case = value;
+        return this;
+    }
+
     cloneFields(src: LexicalUnit) {
         this.Gender = src.Gender;
         this.Case = src.Case;

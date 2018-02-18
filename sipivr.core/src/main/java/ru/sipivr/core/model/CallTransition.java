@@ -1,14 +1,15 @@
 package ru.sipivr.core.model;
 
+import ru.sipivr.core.model.base.AbstractCreatableEntity;
+
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Created by Karpukhin on 01.01.2016.
  */
 @Entity
 @Table
-public class CallTransition extends AbstractVersionEntity {
+public class CallTransition extends AbstractCreatableEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;

@@ -1,7 +1,5 @@
 package ru.sipivr.core.model.base;
 
-import ru.sipivr.core.model.AbstractVersionEntity;
-
 import javax.persistence.*;
 import java.util.Date;
 

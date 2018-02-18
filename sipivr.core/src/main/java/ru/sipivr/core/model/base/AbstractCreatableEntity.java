@@ -1,37 +1,23 @@
-package ru.sipivr.core.model;
+package ru.sipivr.core.model.base;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by Karpukhin on 03.01.2016.
+ * Created by okarpukhin on 18.02.2018.
  */
 @MappedSuperclass
-public abstract class AbstractVersionEntity implements Serializable {
-    @Version
-    @Column(nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private Date rowVersion;
-
+public abstract class AbstractCreatableEntity  implements Serializable {
     @Column(nullable = false, updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date createDate;
 
-    public AbstractVersionEntity(){
+    public AbstractCreatableEntity(){
         createDate = new Date();
-    }
-
-    public Date getRowVersion() {
-        return rowVersion;
-    }
-
-    public void setRowVersion(Date rowVersion) {
-        this.rowVersion = rowVersion;
     }
 
     public Date getCreateDate() {

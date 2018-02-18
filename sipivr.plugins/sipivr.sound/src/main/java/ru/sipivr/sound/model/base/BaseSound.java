@@ -1,7 +1,6 @@
 package ru.sipivr.sound.model.base;
 
-import ru.sipivr.core.model.AbstractVersionEntity;
-import ru.sipivr.core.model.User;
+import ru.sipivr.core.model.base.AbstractVersionEntity;
 
 import javax.persistence.*;
 

@@ -168,6 +168,7 @@
                             var toolbar = new Toolbar();
 
                             var designer = new Designer(toolbar);
+                            window.designer = designer;
 
                             designer.sipclient.currentCall.subscribe(function(newValue){
                                 designer.sipclient.visible(newValue && newValue.number == '${campaign.number}');

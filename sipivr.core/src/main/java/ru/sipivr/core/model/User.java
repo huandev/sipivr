@@ -2,6 +2,7 @@ package ru.sipivr.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import ru.sipivr.core.enums.UserRole;
+import ru.sipivr.core.model.base.AbstractVersionEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by Karpukhin on 01.01.2016.
  */
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"name"}) })
+@Table(name="[User]", uniqueConstraints = { @UniqueConstraint(columnNames = {"name"}) })
 public class User extends AbstractVersionEntity {
     public static final String NamePattern = "^[a-zA-Z]\\w{1,15}$";
     public static final String NamePatternMessage = "User with this login already registered";
@@ -20,13 +21,13 @@ public class User extends AbstractVersionEntity {
     public static final String PasswordPatternMessage = "model.user.password.pattern";
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false, updatable = false)
     @Pattern(regexp = NamePattern, message = NamePatternMessage)
     private String name;
     @Column(nullable = false)
-    @Pattern(regexp=PasswordPattern, message=PasswordPatternMessage)
+    @Pattern(regexp = PasswordPattern, message = PasswordPatternMessage)
     private String password;
     @Column(nullable = false)
     private int role;

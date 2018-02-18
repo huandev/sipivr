@@ -1,6 +1,7 @@
 package ru.sipivr.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import ru.sipivr.core.model.base.AbstractVersionEntity;
 
 import javax.persistence.*;
 import java.util.List;

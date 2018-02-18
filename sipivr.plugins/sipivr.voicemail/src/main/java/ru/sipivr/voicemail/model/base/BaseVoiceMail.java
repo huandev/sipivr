@@ -1,6 +1,6 @@
 package ru.sipivr.voicemail.model.base;
 
-import ru.sipivr.core.model.AbstractVersionEntity;
+import ru.sipivr.core.model.base.AbstractVersionEntity;
 
 import javax.persistence.*;
 

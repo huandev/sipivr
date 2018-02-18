@@ -17,7 +17,7 @@ public class Module {
     private int id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(name="[index]", nullable = false)
     private int index;
 //    @Column(nullable = false)
 //    private int menuId;
