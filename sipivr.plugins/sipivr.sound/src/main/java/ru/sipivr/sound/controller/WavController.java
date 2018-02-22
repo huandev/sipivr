@@ -145,6 +145,7 @@ public class WavController extends BaseController {
     }
 
     @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
     public void uploadFiles(@RequestParam("path") String path, @RequestParam("files") List<MultipartFile> files) throws Exception {
         for (MultipartFile file : files) {
             String extension = FilenameUtils.getExtension(file.getOriginalFilename());

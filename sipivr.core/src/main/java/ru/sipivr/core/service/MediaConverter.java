@@ -15,11 +15,13 @@ import java.io.File;
 public class MediaConverter {
     private final Encoder encoder;
 
-    public MediaConverter() throws EncoderException {
+    public MediaConverter() throws Exception {
         encoder = new Encoder();
 
         for (MediaConverterFormat format : MediaConverterFormat.values()) {
-            isSupported(format);
+            if (!isSupported(format)) {
+                throw new UserException("Format " + format.getValue() + " not supported");
+            }
         }
     }
 
@@ -39,8 +41,16 @@ public class MediaConverter {
             throw new IllegalArgumentException("source format not supported");
         }
 
+        if(!isSupported(MediaConverterFormat.valueOf(sourceFormat.toUpperCase()))){
+            throw new IllegalArgumentException("source format not supported");
+        }
+
         String destFormat = FilenameUtils.getExtension(dest.getName());
         if(MediaConverterFormat.valueOf(destFormat.toUpperCase()) == null){
+            throw new IllegalArgumentException("dest format not supported");
+        }
+
+        if(!isSupported(MediaConverterFormat.valueOf(destFormat.toUpperCase()))){
             throw new IllegalArgumentException("dest format not supported");
         }
 
@@ -50,8 +60,8 @@ public class MediaConverter {
                 if (bitRate != null)
                     setBitRate(bitRate);
 
-                setSamplingRate(8000);
-                setChannels(2);
+                setSamplingRate(16000);
+                setChannels(1);
             }});
         }};
 
