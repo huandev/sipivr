@@ -51,6 +51,8 @@
                     <button class="blue" type="button" data-bind="click: function() { $('input[type=file]', $($element).parent()).click(); }">
                         <span class="icon-plus"></span> <spring:message code="ui.add"/>
                     </button>
+                    <input type="file" style="display: none;" data-bind="event: { change: function() { fileDropHandler($element.files); }}" multiple  accept=".wav,.mp3"/>
+
                     <!-- ko if: $root.selectMode() -->
                     <button class="blue" data-bind="click: function() { $root.selectMode(false); }"><spring:message code="ui.cancel"/></button>
                     <!-- /ko -->
