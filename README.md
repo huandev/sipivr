@@ -1,5 +1,5 @@
 # sipivr
-sipivr is a moduled designer ivr.
+sipivr is a moduled ivr designer.
 
 video https://www.youtube.com/watch?v=BGIrc9PPLF8
 
