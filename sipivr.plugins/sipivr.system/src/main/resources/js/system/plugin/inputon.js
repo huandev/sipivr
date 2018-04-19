@@ -1,12 +1,11 @@
-define(["editor/Module", "editor/ToolbarItem", "editor/points/OutputPoint"],
-    function (Module, ToolbarItem, OutputPoint) {
-        var key = "ru.sipivr.system.plugin.noInput";
+define(["editor/Module", "editor/ToolbarItem"],
+    function (Module, ToolbarItem) {
+        var key = "ru.sipivr.system.plugin.inputOn";
 
         function NewModule(designer, menu) {
             Module.call(this, designer, menu);
 
             this.name(key);
-            this.outputPoints.push(new OutputPoint(this));
             this.icon("icon-th");
         }
 

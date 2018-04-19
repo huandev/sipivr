@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sipivr.core.controller.BaseController;
 import ru.sipivr.core.enums.UserRole;
+import ru.sipivr.core.utils.StringUtils;
 import ru.sipivr.report.excel.Report;
 import ru.sipivr.core.model.Call;
 import ru.sipivr.core.model.CallTransition;
@@ -67,6 +68,12 @@ public class ApiController extends BaseController {
 
                 String route = "";
                 for (CallTransition t : call.getTransitions()) {
+                    String input = t.getInput();
+
+                    if(!StringUtils.isNullOrEmpty(input)) {
+                        route += " (DTMF " + input + ")";
+                    }
+
                     if (route.length() > 0) {
                         route += " => ";
                     }

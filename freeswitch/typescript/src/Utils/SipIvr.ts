@@ -1,7 +1,12 @@
 import { Sound } from "./Sound";
 
-declare type ModuleType = "Bridge" | "Condition" | "Conference" | "IfVariable" | "Input" | "Record" | "Script" | "SetVariable" | "Sleep" | "Sound" | "Transfer" | "Transition";
+declare type ModuleType = "Bridge" | "Condition" | "Conference" | "IfVariable" | "Input" | "InputOn" | "InputOff" | "NoInput" | "NoMatch"
+    | "Record" | "Script" | "SetVariable" | "Sleep" | "Sound" | "Transfer" | "Transition";
+
 declare type Module = { type: ModuleType };
+declare type CurrentMenuDataType = {
+    Conditions: string[],
+};
 
 export class SipIvr {
     private inputRunned = false;
@@ -14,8 +19,9 @@ export class SipIvr {
     private readonly calledId = session.getVariable("destination_number");
     private readonly number = argv[0];
 
-    private readonly Settings: { Host: string, Cred: string, };
+    private readonly Settings: { Host: string, Cred: string };
 
+    private CurrentMenuData: CurrentMenuDataType;
 
     constructor(settings: { Host: string, Cred: string }) {
         this.Settings = settings;
@@ -35,16 +41,13 @@ export class SipIvr {
         if (session.ready()) {
             console_log("info", "transition: " + menuId);
 
-            this.inputRunned = false;
-            Sound.clearInput();
-
             let url = this.Settings.Host + "/service";
             let data = "sipCallId=" + this.sipCallId + "&callerId=" + this.callerId + "&calledId=" + this.calledId;
             if (this.callId) {
                 data += "&callId=" + this.callId;
             }
             if (this.input) {
-                data += "&input=" + this.input;
+                data += "&input=" + encodeURIComponent(this.input);
             }
 
             if (menuId) {
@@ -52,6 +55,14 @@ export class SipIvr {
             } else {
                 url += "/" + this.number;
             }
+
+            this.CurrentMenuData = {
+                Conditions: [],
+            };
+
+            this.inputRunned = false;
+            this.input = null;
+            Sound.clearInput();
 
             let response = this.request(url, data, this.Settings.Cred);
 
@@ -74,6 +85,10 @@ export class SipIvr {
     }
 
     compare(mask: string, input: string): boolean {
+        if (input === null) {
+            return false;
+        }
+
         let index = 0;
 
         for (let i = 0; i < mask.length; i++) {
@@ -102,14 +117,20 @@ export class SipIvr {
                     break;
                 case "Condition":
                     console_log("info", "Value: " + item["value"]);
-                    if (!this.inputRunned) {
-                        this.performModule({ type: "Input", duration: 5000, length: 1 } as any);
+
+                    if (Sound.hasInput()) {
+                        this.input = Sound.getInput();
                     }
-                    if (this.compare(item["value"], this.input)) {
-                        if (item["nextMenuId"]) {
-                            this.transition(item["nextMenuId"]);
+
+                    if (item["value"]) {
+                        this.CurrentMenuData.Conditions.push(item["value"]);
+
+                        if (this.compare(item["value"], this.input)) {
+                            if (item["nextMenuId"]) {
+                                this.transition(item["nextMenuId"]);
+                            }
+                            return true;
                         }
-                        return true;
                     }
                     break;
                 case "Conference":
@@ -131,6 +152,31 @@ export class SipIvr {
                         this.input = this.getInput(item["duration"], item["length"]);
                     }
                     break;
+                case "InputOff":
+                    Sound.inputOff();
+                    break;
+                case "InputOn":
+                    Sound.inputOn();
+                    break;
+                case "NoInput":
+                    if (Sound.hasInput()) {
+                        this.input = Sound.getInput();
+                    }
+                    if (!this.input && item["nextMenuId"]) {
+                        this.transition(item["nextMenuId"]);
+                        return true;
+                    }
+                    break;
+                case "NoMatch":
+                    if (Sound.hasInput()) {
+                        this.input = Sound.getInput();
+                    }
+
+                    if (item["nextMenuId"] && this.input && this.CurrentMenuData.Conditions.indexOf(this.input) < 0) {
+                        this.transition(item["nextMenuId"]);
+                        return true;
+                    }
+                    break;
                 case "Record":
                     if (this.record(item["folder"], item["duration"]) && item["url"]) {
                         this.request(this.Settings.Host + item["url"], "callId=" + this.callId, this.Settings.Cred);
@@ -149,7 +195,9 @@ export class SipIvr {
                     Sound.play(item["path"]);
                     break;
                 case "Transfer":
-                    this.transfer(item["number"]);
+                    if (item["number"]) {
+                        this.transfer(item["number"]);
+                    }
                     return true;
                 case "Transition":
                     if (item["nextMenuId"]) {

@@ -37,7 +37,12 @@ gulp.task('typescript', function (done) {
     })).pipe(gulp.dest(output));
 });
 
-gulp.task('rename', ['typescript'], function () {
+gulp.task('javascript', function (done) {
+    return gulp.src([src + '/**/*.js'])
+        .pipe(gulp.dest(output));
+});
+
+gulp.task('rename', ['typescript', 'javascript'], function () {
     return gulp.src(output + "/**/*.ts")
     .pipe(rename(function (path) {
 		path.basename += ".ts";
@@ -55,5 +60,5 @@ gulp.task('clean', ['rename'], function () {
 });
 
 gulp.task('default', function() {
-    return gulp.watch(src + '/**/*.ts', ['clean']);
+    return gulp.watch([src + '/**/*.ts', src + '/**/*.js'], ['clean']);
 });

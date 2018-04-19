@@ -7,6 +7,7 @@ define(["editor/Module", "editor/ToolbarItem", "editor/points/OutputPoint"],
 
             this.name(key);
             this.outputPoints.push(new OutputPoint(this));
+            this.icon("icon-th");
         }
 
         NewModule.prototype = Object.create(Module.prototype);
