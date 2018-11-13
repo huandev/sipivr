@@ -4,7 +4,7 @@ SIPIVR lets you create applications for voice response systems.
 
 Video: https://www.youtube.com/watch?v=BGIrc9PPLF8
 
-# SIPIVR modules:
+### SIPIVR modules:
 - sipivr.system
 - sipivr.speech
 - sipivr.sound
@@ -16,13 +16,13 @@ Video: https://www.youtube.com/watch?v=BGIrc9PPLF8
 - sipivr.currency
 - sipivr.cbr
 
-# Overview
+### Overview
 - uses Freeswitch with simple configuration
 - works over SIP
 - uses WebRTC
 - supports scripting (javascript, typescript)
 
-# Build/Installing
+### Build/Installing
 - install freeswitch from https://freeswitch.org
 - execute "npm run build" in folder https://github.com/okarpukhin/sipivr/tree/master/freeswitch/typescript
 - replace standard folder "freeswitch/conf" on "sipivr/freeswitch/conf"
