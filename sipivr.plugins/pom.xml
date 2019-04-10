@@ -18,6 +18,7 @@
         <module>sipivr.schedule</module>
         <module>sipivr.sound</module>
         <!--<module>sipivr.currency</module>-->
+        <module>sipivr.speech</module>
         <module>sipivr.system</module>
         <module>sipivr.voicemail</module>
     </modules>

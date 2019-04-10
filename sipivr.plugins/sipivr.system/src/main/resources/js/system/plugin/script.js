@@ -18,6 +18,12 @@ define(["knockout", "editor/Module", "editor/ElementParameter", "editor/ToolbarI
             this.parameters.push(new ElementParameter({ name: "arguments", value: "", title: messages[key + ".arguments"] }));
 
             this.icon("icon-tag");
+
+            this.text = ko.computed(function () {
+                return ko.utils.arrayMap(this.parameters(), function (p) {
+                        return p.text();
+                    }).join(" ");
+            }, this);
         }
 
         NewModule.prototype = Object.create(Module.prototype);

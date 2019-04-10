@@ -1,5 +1,5 @@
-define(["editor/Module", "editor/ElementParameter", "editor/ToolbarItem", "messages", "editor/points/OutputPoint"],
-    function (Module, ElementParameter, ToolbarItem, messages, OutputPoint) {
+define(["knockout", "editor/Module", "editor/ElementParameter", "editor/ToolbarItem", "messages", "editor/points/OutputPoint"],
+    function (ko, Module, ElementParameter, ToolbarItem, messages, OutputPoint) {
         var key = "ru.sipivr.system.plugin.ifVariable";
 
         function NewModule(designer, menu) {
@@ -12,9 +12,9 @@ define(["editor/Module", "editor/ElementParameter", "editor/ToolbarItem", "messa
                 { Value: "Equal", Text: "=" },
                 { Value: "NotEqual", Text: "!=" },
                 { Value: "LessThan", Text: "<" },
-                { Value: "LessThanOrQqual", Text: "<=" },
+                { Value: "LessThanOrEqual", Text: "<=" },
                 { Value: "GreaterThan", Text: ">" },
-                { Value: "GreaterThanOrQqual", Text: ">=" },
+                { Value: "GreaterThanOrEqual", Text: ">=" },
                 { Value: "Match", Text: "[.]" },
                 { Value: "NotMatch", Text: "[^]" }
             ];
@@ -27,6 +27,15 @@ define(["editor/Module", "editor/ElementParameter", "editor/ToolbarItem", "messa
             this.parameters.push(new ElementParameter({ name: "value", title: messages[key + ".value"] }));
 
             this.outputPoints.push(new OutputPoint(this));
+
+            this.text = ko.computed(function () {
+                return ko.utils.arrayMap(this.parameters(), function (p) {
+                    if(p === parameter) {
+                        return parameter.options.find(function(option) { return option.Value === p.value(); }).Text;
+                    }
+                    return p.text();
+                }).join(" ");
+            }, this);
         }
 
         NewModule.prototype = Object.create(Module.prototype);

@@ -117,7 +117,7 @@
             <g data-bind="attr: { 'class': 'menu-item' + (active() ? ' active' : '') }">
                 <rect width="194" data-bind="attr: {height: height, 'class': 'menu-item-back' + (active() ? ' active' : '') + (!isValid() ? ' menu-item-incorrect' : '')}"/>
                 <text class="icon icon-left" x="6" y="21" data-bind="html: $root.icons['icon-cancel'], click: remove, event: { mousedown: function(s, e){ e.stopPropagation(); } }"></text>
-                <text x="25" y="20" data-bind="text: text().substr(0, 21)" clip-path="url(#textClip)"/>
+                <text x="25" y="20" data-bind="text: text() ? text().substr(0, 21) : ''" clip-path="url(#textClip)"/>
                 <!-- ko foreach: outputPoints -->
                 <circle class="point output" r="8" data-bind="attr: { transform: 'translate(196,' + (15 + $index() * 30) + ')' }, event: { onload: init($element), mousedown: function(s, e){ e.stopPropagation(); } }"></circle>
                 <!-- /ko -->
